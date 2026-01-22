@@ -1,0 +1,13 @@
+<nav class="sidebar">
+    <!-- <a class="active">Días disponibles</a> -->
+    <a class="active" routerLink="/">Beneficios</a>
+    <a routerLink="/mis-solicitudes">Mis Solicitudes</a>
+
+    <button *ngIf="userRole === 'LEADER'" routerLink="/aprobaciones">
+        Aprobaciones
+    </button>
+
+
+    <!-- <a>Términos y condiciones</a>
+    <a>Salir</a> -->
+</nav>

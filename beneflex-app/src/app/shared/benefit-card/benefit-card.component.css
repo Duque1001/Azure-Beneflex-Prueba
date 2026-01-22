@@ -1,0 +1,16 @@
+.card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 20px;
+  text-align: center;
+}
+
+.days {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

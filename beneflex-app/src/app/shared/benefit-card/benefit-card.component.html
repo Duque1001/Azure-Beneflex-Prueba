@@ -1,0 +1,11 @@
+<div class="card">
+    <h3>{{ title }}</h3>
+    <p class="days">{{ days }} días</p>
+    <p>Disponibles</p>
+
+    <button [disabled]="days === 0"
+            (click)="onSolicitar()">
+        + Solicitar
+    </button>
+</div>
+

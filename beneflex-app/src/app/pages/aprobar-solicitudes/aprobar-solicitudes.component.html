@@ -1,0 +1,8 @@
+<div *ngFor="let req of solicitudes" class="card">
+    <p><strong>Usuario:</strong> {{ req.user?.nombre || req.user_id }}</p>
+    <p><strong>Beneficio:</strong> {{ req.benefit?.name || req.benefit_id }}</p>
+    <p><strong>Días:</strong> {{ req.requested_days }}</p>
+
+    <button (click)="aprobar(req.id)">✅ Aprobar</button>
+    <button (click)="rechazar(req.id)">❌ Rechazar</button>
+</div>

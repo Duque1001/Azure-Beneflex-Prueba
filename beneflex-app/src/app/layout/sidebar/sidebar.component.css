@@ -1,0 +1,17 @@
+.sidebar {
+  width: 220px;
+  background: white;
+  padding: 20px;
+  border-right: 1px solid #ddd;
+}
+
+  .sidebar a {
+    display: block;
+    margin-bottom: 15px;
+    cursor: pointer;
+    color: #5e2d91;
+  }
+
+    .sidebar a.active {
+      font-weight: bold;
+    }
