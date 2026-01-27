@@ -4,38 +4,43 @@
   gap: 20px;
 } Wilson */
 
-/* contenedor del menú */
-.menu-lateral {
+.menu-panel {
+  width: 100%;
+  padding: 20px 0;
+  background: #f3f3f3;
   display: flex;
   flex-direction: column;
-  padding: 20px 10px;
+  gap: 10px;
 }
 
-/* botones/links del menú */
-.menu-lateral a,
-.menu-lateral button {
-  all: unset; /* limpia estilos por defecto */
-  cursor: pointer;
-  padding: 14px 16px;
-  margin-bottom: 8px;
+/* item */
+.menu-item {
+  padding: 18px 22px;
+  margin: 0 10px;
 
-  font-size: 16px;
+  background: transparent;
+  border-radius: 8px;
+
+  font-size: 18px;
   font-weight: 600;
-  color: #5a2d82; /* morado */
+  color: #5a2d82;  /* morado Beneflex */
 
-  border-radius: 6px;
-  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  user-select: none;
+
+  transition: all 0.2s ease;
 }
 
-/* hover igual al segundo menú */
-.menu-lateral a:hover,
-.menu-lateral button:hover {
-  background-color: #f2edf7;
+/* hover */
+.menu-item:hover {
+  background: #e8dff2;
 }
 
 /* activo */
-.menu-lateral .active {
-  background-color: #e9e1f3;
+.menu-item.active {
+  background: white;
+  box-shadow: 0 0 0 1px #e0d7ec inset;
   font-weight: 700;
 }
+
 

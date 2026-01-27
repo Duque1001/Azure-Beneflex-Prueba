@@ -12,10 +12,12 @@
                      (confirmar)="enviarSolicitud($event)">
 </app-solicitud-modal> Wilson -->
 
-<div class="menu-lateral">
-  <a>Beneficios</a>
-  <a>Mis Solicitudes</a>
-  <button>Aprobaciones</button>
+<div class="menu-panel">
+  <div class="menu-item" (click)="irBeneficios()">Beneficios</div>
+  <div class="menu-item" (click)="irSolicitudes()">Mis Solicitudes</div>
+  <div class="menu-item" (click)="irAprobaciones()">Aprobaciones</div>
 </div>
+
+
 
 
