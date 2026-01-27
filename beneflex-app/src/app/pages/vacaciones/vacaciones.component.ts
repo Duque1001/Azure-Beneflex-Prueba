@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+/*import { Component, OnInit } from '@angular/core';
 import { BeneficiosService } from '../../core/beneficios.service';
 import { Beneficio } from '../../core/models/beneficio.model';
 import { BeneficioCard } from '../../core/models/beneficio-card.model';
@@ -90,7 +90,7 @@ export class VacacionesComponent implements OnInit {
 
 
 
-}
+}*/ //Wilson
 
 
 
@@ -130,3 +130,83 @@ export class VacacionesComponent implements OnInit {
     this.cerrarModal();
   }
 }*/
+
+import { Component, OnInit } from '@angular/core';
+import { BeneficiosService } from '../../core/beneficios.service';
+import { BeneficioCard } from '../../core/models/beneficio-card.model';
+import { NotificationService } from '../../shared/services/notification.service';
+
+@Component({
+  selector: 'app-vacaciones',
+  standalone: false,
+  templateUrl: './vacaciones.component.html',
+  styleUrl: './vacaciones.component.css'
+})
+export class VacacionesComponent implements OnInit {
+
+  beneficios: BeneficioCard[] = [];
+  beneficioSeleccionado: BeneficioCard | null = null;
+
+  modalVisible = false;
+  userId = 1; // luego lo sacamos del login
+
+  constructor(
+    private beneficiosService: BeneficiosService,
+    private notify: NotificationService
+  ) { }
+
+  ngOnInit(): void {
+    this.cargarBeneficios();
+  }
+
+  cargarBeneficios() {
+    this.beneficiosService.getByUser(this.userId).subscribe({
+      next: (data: BeneficioCard[]) => {
+        console.log('Beneficios recibidos:', data);
+        this.beneficios = data;
+      },
+      error: (err: any) => {
+        console.error('Error cargando beneficios', err);
+        this.notify.error('No se pudieron cargar los beneficios');
+      }
+    });
+  }
+
+  abrirModal(beneficio: BeneficioCard) {
+    this.beneficioSeleccionado = beneficio;
+    this.modalVisible = true;
+  }
+
+  cerrarModal() {
+    this.modalVisible = false;
+    this.beneficioSeleccionado = null;
+  }
+
+  enviarSolicitud(payload: any) {
+    if (!this.beneficioSeleccionado) return;
+
+    const request = {
+      userId: Number(this.userId),
+      benefitId: Number(this.beneficioSeleccionado.id),
+      requestedDays: Number(payload.dias),
+      startDate: payload.fecha,
+      endDate: null,
+      comment: payload.comentario
+    };
+
+    console.log('Request enviado:', request);
+
+    this.beneficiosService.crearSolicitud(request).subscribe({
+      next: () => {
+        this.modalVisible = false;
+        this.beneficioSeleccionado = null;
+        this.cargarBeneficios();
+        this.notify.success('Solicitud creada correctamente');
+      },
+      error: (err: any) => {
+        console.error('Error creando solicitud', err?.error ?? err);
+        this.notify.error('No se pudo crear la solicitud');
+      }
+    });
+  }
+}
