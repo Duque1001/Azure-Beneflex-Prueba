@@ -30,7 +30,7 @@ import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component'
 import { MsalGuard } from '@azure/msal-angular';
 
 const routes: Routes = [
-  // Landing: pantalla morada
+  // Landing: pantalla morada, NO usa layout
   { path: '', component: LandingComponent },
 
   // App protegida: usa layout con header/sidebar

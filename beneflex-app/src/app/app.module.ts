@@ -57,7 +57,7 @@ import { AprobarSolicitudesComponent } from './pages/aprobar-solicitudes/aprobar
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 
 
-/* MSAL */
+/** ✅ MSAL */
 import {
   MsalModule,
   MsalService,
@@ -77,7 +77,7 @@ import {
   BrowserCacheLocation
 } from '@azure/msal-browser';
 
-/* Environment */
+/** ✅ Environment (recomendado) */
 import { environment } from '../environments/environment';
 
 export function msalInstanceFactory() {
@@ -133,13 +133,13 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     HttpClientModule,
     MatSnackBarModule,
 
-    /* MSAL */
+    /**MSAL */
     MsalModule,
 
     AppComponent,
   ],
   providers: [
-    /* Providers MSAL */
+    /** Providers MSAL */
     {
       provide: MSAL_INSTANCE,
       useFactory: msalInstanceFactory
@@ -156,7 +156,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MsalGuard,
     MsalBroadcastService,
 
-    /* Interceptor (Bearer token a API) */
+    /** Interceptor (Bearer token a API) */
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MsalInterceptor,
