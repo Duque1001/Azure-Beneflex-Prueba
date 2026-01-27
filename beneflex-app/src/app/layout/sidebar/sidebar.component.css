@@ -1,4 +1,4 @@
-.sidebar {
+/* .sidebar {
   width: 220px;
   background: white;
   padding: 20px;
@@ -14,4 +14,60 @@
 
     .sidebar a.active {
       font-weight: bold;
+    } Wilson */
+
+    .sidebar {
+      width: 260px;
+      background: #f3f3f3;
+      padding: 12px 10px;
+      border-right: 1px solid #ddd;
     }
+
+    /* Links y botón idénticos */
+    .sidebar a,
+    .sidebar button {
+      all: unset;
+      box-sizing: border-box;
+
+      display: block;
+      width: 100%;
+
+      padding: 18px 18px;
+      margin: 8px 0;
+
+      font-size: 18px;
+      font-weight: 600;
+      color: #5e2d91;
+
+      cursor: pointer;
+      user-select: none;
+
+      border-radius: 8px;
+      transition: background-color 0.15s ease-in-out;
+    }
+
+    /* Quitar subrayado del <a> */
+    .sidebar a {
+      text-decoration: none;
+    }
+
+    /* Hover como el menú "bonito" */
+    .sidebar a:hover,
+    .sidebar button:hover {
+      background: #e8dff2;
+    }
+
+    /* Activo (se ve como tarjeta blanca) */
+    .sidebar a.active {
+      background: #ffffff;
+      font-weight: 700;
+      box-shadow: 0 0 0 1px #e0d7ec inset;
+    }
+
+    /* Accesibilidad: foco con teclado */
+    .sidebar a:focus-visible,
+    .sidebar button:focus-visible {
+      outline: 2px solid #5e2d91;
+      outline-offset: 2px;
+    }
+

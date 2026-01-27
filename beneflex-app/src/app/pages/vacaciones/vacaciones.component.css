@@ -1,46 +1,5 @@
-/* .grid {
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
-} Wilson */
-
-.menu-panel {
-  width: 100%;
-  padding: 20px 0;
-  background: #f3f3f3;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
-
-/* item */
-.menu-item {
-  padding: 18px 22px;
-  margin: 0 10px;
-
-  background: transparent;
-  border-radius: 8px;
-
-  font-size: 18px;
-  font-weight: 600;
-  color: #5a2d82;  /* morado Beneflex */
-
-  cursor: pointer;
-  user-select: none;
-
-  transition: all 0.2s ease;
-}
-
-/* hover */
-.menu-item:hover {
-  background: #e8dff2;
-}
-
-/* activo */
-.menu-item.active {
-  background: white;
-  box-shadow: 0 0 0 1px #e0d7ec inset;
-  font-weight: 700;
-}
-
-
