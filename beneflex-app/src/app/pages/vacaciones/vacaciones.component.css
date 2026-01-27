@@ -1,5 +1,41 @@
-.grid {
+/* .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
+} Wilson */
+
+/* contenedor del menú */
+.menu-lateral {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 10px;
 }
+
+/* botones/links del menú */
+.menu-lateral a,
+.menu-lateral button {
+  all: unset; /* limpia estilos por defecto */
+  cursor: pointer;
+  padding: 14px 16px;
+  margin-bottom: 8px;
+
+  font-size: 16px;
+  font-weight: 600;
+  color: #5a2d82; /* morado */
+
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
+
+/* hover igual al segundo menú */
+.menu-lateral a:hover,
+.menu-lateral button:hover {
+  background-color: #f2edf7;
+}
+
+/* activo */
+.menu-lateral .active {
+  background-color: #e9e1f3;
+  font-weight: 700;
+}
+
