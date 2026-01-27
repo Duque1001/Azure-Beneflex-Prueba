@@ -31,6 +31,8 @@ export class BenefitRequestsService {
     );
   }
 
-
+  crearSolicitud(request: any) {
+    return this.http.post(`${this.apiUrl}`, request);
+  }
 
 }

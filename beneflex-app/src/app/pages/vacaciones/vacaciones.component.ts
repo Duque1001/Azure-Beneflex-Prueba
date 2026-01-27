@@ -4,6 +4,7 @@ import { Beneficio } from '../../core/models/beneficio.model';
 import { BeneficioCard } from '../../core/models/beneficio-card.model';
 import { ApiService } from '../../core/api.service';
 import { NotificationService } from '../../shared/services/notification.service';
+import { BenefitRequestsService } from '../../../app/core/services/benefit-requests.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class VacacionesComponent implements OnInit {
 
   constructor(
     private beneficiosService: BeneficiosService,
+    private benefitRequestsService: BenefitRequestsService,
     private notify: NotificationService
   ) { }
 
@@ -74,7 +76,8 @@ export class VacacionesComponent implements OnInit {
 
     console.log('Request enviado:', request);
 
-    this.beneficiosService.crearSolicitud(request).subscribe({
+    //this.beneficiosService.crearSolicitud(request).subscribe({
+      this.benefitRequestsService.crearSolicitud(request).subscribe({
       next: () => {
         this.modalVisible = false;
         this.beneficioSeleccionado = null;
