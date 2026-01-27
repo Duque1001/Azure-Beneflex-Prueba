@@ -59,9 +59,8 @@
 
     /* Activo (se ve como tarjeta blanca) */
     .sidebar a.active {
-      background: #ffffff;
+      background: transparent;
       font-weight: 700;
-      box-shadow: 0 0 0 1px #e0d7ec inset;
     }
 
     /* Accesibilidad: foco con teclado */
