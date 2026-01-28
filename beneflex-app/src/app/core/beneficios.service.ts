@@ -86,6 +86,9 @@ export class BeneficiosService {
     endDate?: string | null;
     comment?: string;
   }) {
-    return this.http.post(`${this.apiUrl}/benefit-requests`, payload);
+    const url =
+      'https://beneflex-functions-ajfsbxbfetexc9cu.canadacentral-01.azurewebsites.net/api/create-benefit-request';
+
+    return this.http.post(url, payload);
   }
 }

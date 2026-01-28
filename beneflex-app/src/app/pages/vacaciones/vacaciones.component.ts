@@ -204,8 +204,9 @@ export class VacacionesComponent implements OnInit {
         this.notify.success('Solicitud creada correctamente');
       },
       error: (err: any) => {
-        console.error('Error creando solicitud', err?.error ?? err);
-        this.notify.error('No se pudo crear la solicitud');
+        console.error('Error creando solicitud', err);
+        if (err?.status === 0) this.notify.error('Bloqueado por CORS o red');
+        else this.notify.error(`Error ${err?.status}: No se pudo crear la solicitud`);
       }
     });
   }
