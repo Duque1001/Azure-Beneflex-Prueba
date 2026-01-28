@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+/*import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Beneficio } from '../../core/models/beneficio.model';
 import { BeneficioCard } from '../../core/models/beneficio-card.model';
@@ -63,7 +63,7 @@ export class SolicitudModalComponent implements OnInit {
     this.cerrar.emit();
   }
 
-  /*onConfirmar() {
+  onConfirmar() {
     if (this.form.invalid) return;
 
     this.confirmar.emit({
@@ -74,24 +74,56 @@ export class SolicitudModalComponent implements OnInit {
     this.form.reset();
   }*/ // Wilson
 
+
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '../services/notification.service'; // ajusta la ruta si cambia
+
+@Component({
+  selector: 'app-solicitud-modal',
+  templateUrl: './solicitud-modal.component.html',
+  styleUrls: ['./solicitud-modal.component.css']
+})
+export class SolicitudModalComponent {
+  @Input() beneficio: any;
+  @Output() cerrar = new EventEmitter<void>();
+  @Output() confirmar = new EventEmitter<any>();
+
+  form: FormGroup;
+
+  constructor(private fb: FormBuilder, private notify: NotificationService) {
+    // ✅ Solo FECHA y DIAS obligatorios
+    this.form = this.fb.group({
+      fecha: ['', Validators.required],
+      dias: [null, Validators.required],
+      comentario: [''] // opcional
+    });
+  }
+
+  onCancelar() {
+    this.form.reset();
+    this.cerrar.emit();
+  }
+
   onConfirmar() {
     if (this.form.invalid) {
-      this.form.markAllAsTouched(); // muestra errores visuales
+      // ✅ fuerza a que se marquen en rojo (touched)
+      this.form.markAllAsTouched();
 
-      this.notify.error(
-        'Debes completar toda la información para confirmar la solicitud'
-      );
-
+      // ✅ mensaje
+      this.notify.error('Debes completar toda la información para confirmar la solicitud');
       return;
     }
 
+    // ✅ emite al padre para que haga el POST
     this.confirmar.emit({
       ...this.form.value,
       beneficio: this.beneficio
     });
 
+    // cierre y limpieza
     this.form.reset();
-    this.cerrar.emit(); // cierra el modal
+    this.cerrar.emit();
   }
-
 }
+
