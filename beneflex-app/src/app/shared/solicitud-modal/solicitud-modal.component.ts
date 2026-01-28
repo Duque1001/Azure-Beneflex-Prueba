@@ -82,7 +82,7 @@ import { NotificationService } from '../services/notification.service'; // ajust
 @Component({
   selector: 'app-solicitud-modal',
   templateUrl: './solicitud-modal.component.html',
-  styleUrls: ['./solicitud-modal.component.css']
+  styleUrls: ['./solicitud-modal.component.css'],
 })
 export class SolicitudModalComponent {
   @Input() beneficio: any;
