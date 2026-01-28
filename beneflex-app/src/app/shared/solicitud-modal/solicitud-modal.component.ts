@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Beneficio } from '../../core/models/beneficio.model';
 import { BeneficioCard } from '../../core/models/beneficio-card.model';
+import { NotificationService } from '../../shared/services/notification.service';
+
 
 @Component({
   selector: 'app-solicitud-modal',
@@ -19,7 +21,10 @@ export class SolicitudModalComponent implements OnInit {
 
   form!: FormGroup;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private fb: FormBuilder,
+    private notify: NotificationService
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -58,7 +63,7 @@ export class SolicitudModalComponent implements OnInit {
     this.cerrar.emit();
   }
 
-  onConfirmar() {
+  /*onConfirmar() {
     if (this.form.invalid) return;
 
     this.confirmar.emit({
@@ -67,5 +72,26 @@ export class SolicitudModalComponent implements OnInit {
     });
 
     this.form.reset();
+  }*/ // Wilson
+
+  onConfirmar() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched(); // muestra errores visuales
+
+      this.notify.error(
+        'Debes completar toda la información para confirmar la solicitud'
+      );
+
+      return;
+    }
+
+    this.confirmar.emit({
+      ...this.form.value,
+      beneficio: this.beneficio
+    });
+
+    this.form.reset();
+    this.cerrar.emit(); // cierra el modal
   }
+
 }

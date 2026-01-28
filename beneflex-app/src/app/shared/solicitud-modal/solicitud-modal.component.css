@@ -62,3 +62,10 @@ select {
   width: 100%;
   padding: 6px;
 }
+
+input.ng-touched.ng-invalid,
+select.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid {
+  border: 2px solid #e53935;
+  background: #fdecec;
+}
