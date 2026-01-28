@@ -51,14 +51,17 @@
       text-decoration: none;
     }
 
-    /* Hover como el menú "bonito" */
+    /* Hover uniforme (incluye activos) */
     .sidebar a:hover,
-    .sidebar button:hover {
+    .sidebar button:hover,
+    .sidebar a.active:hover,
+    .sidebar button.active:hover {
       background: #e8dff2;
     }
 
-    /* Activo (se ve como tarjeta blanca) */
-    .sidebar a.active {
+    /* Estado activo (sin fondo blanco, pero marcado) */
+    .sidebar a.active,
+    .sidebar button.active {
       background: transparent;
       font-weight: 700;
     }
@@ -68,5 +71,6 @@
     .sidebar button:focus-visible {
       outline: 2px solid #5e2d91;
       outline-offset: 2px;
+      border-radius: 8px;
     }
 
