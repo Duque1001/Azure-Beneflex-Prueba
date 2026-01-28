@@ -63,7 +63,6 @@ select {
   padding: 6px;
 }
 
-/* Inputs inválidos cuando ya se intentó validar */
 input.ng-touched.ng-invalid,
 select.ng-touched.ng-invalid,
 textarea.ng-touched.ng-invalid {

@@ -122,7 +122,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     AuthLayoutComponent,
     VacacionesComponent,
     BenefitCardComponent,
-    SolicitudModalComponent,
+    //SolicitudModalComponent,
     MisSolicitudesComponent,
     AprobarSolicitudesComponent
   ],
@@ -137,6 +137,8 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MsalModule,
 
     AppComponent,
+
+    SolicitudModalComponent,
   ],
   providers: [
     /** Providers MSAL */

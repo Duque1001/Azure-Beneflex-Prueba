@@ -75,55 +75,58 @@ export class SolicitudModalComponent implements OnInit {
   }*/ // Wilson
 
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from '../services/notification.service'; // ajusta la ruta si cambia
+  import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+  import { CommonModule } from '@angular/common';
+  import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+  import { BeneficioCard } from '../../core/models/beneficio-card.model';
+  import { NotificationService } from '../services/notification.service';
 
-@Component({
-  selector: 'app-solicitud-modal',
-  templateUrl: './solicitud-modal.component.html',
-  styleUrls: ['./solicitud-modal.component.css'],
-})
-export class SolicitudModalComponent {
-  @Input() beneficio: any;
-  @Output() cerrar = new EventEmitter<void>();
-  @Output() confirmar = new EventEmitter<any>();
+  @Component({
+    selector: 'app-solicitud-modal',
+    standalone: true,
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './solicitud-modal.component.html',
+    styleUrls: ['./solicitud-modal.component.css'],
+  })
+  export class SolicitudModalComponent implements OnInit {
+    @Input() beneficio!: BeneficioCard | null;
+    @Input() visible = false;
 
-  form: FormGroup;
+    @Output() cerrar = new EventEmitter<void>();
+    @Output() confirmar = new EventEmitter<any>();
 
-  constructor(private fb: FormBuilder, private notify: NotificationService) {
-    // ✅ Solo FECHA y DIAS obligatorios
-    this.form = this.fb.group({
-      fecha: ['', Validators.required],
-      dias: [null, Validators.required],
-      comentario: [''] // opcional
-    });
-  }
+    form!: FormGroup;
 
-  onCancelar() {
-    this.form.reset();
-    this.cerrar.emit();
-  }
+    constructor(private fb: FormBuilder, private notify: NotificationService) {}
 
-  onConfirmar() {
-    if (this.form.invalid) {
-      // ✅ fuerza a que se marquen en rojo (touched)
-      this.form.markAllAsTouched();
-
-      // ✅ mensaje
-      this.notify.error('Debes completar toda la información para confirmar la solicitud');
-      return;
+    ngOnInit() {
+      // ✅ Solo FECHA y DIAS obligatorios. Comentario NO.
+      this.form = this.fb.group({
+        fecha: ['', Validators.required],
+        dias: [null, Validators.required],
+        comentario: [''],
+      });
     }
 
-    // ✅ emite al padre para que haga el POST
-    this.confirmar.emit({
-      ...this.form.value,
-      beneficio: this.beneficio
-    });
+    onCerrar() {
+      this.form.reset();
+      this.cerrar.emit();
+    }
 
-    // cierre y limpieza
-    this.form.reset();
-    this.cerrar.emit();
+    onConfirmar() {
+      // ✅ Si está inválido, muestra mensaje y marca campos en rojo
+      if (this.form.invalid) {
+        this.form.markAllAsTouched();
+        this.notify.error('Debes completar toda la información obligatoria para confirmar la solicitud');
+        return;
+      }
+
+      this.confirmar.emit({
+        ...this.form.value,
+        beneficio: this.beneficio,
+      });
+
+      this.form.reset();
+      this.cerrar.emit(); // ✅ cierra el modal al confirmar
+    }
   }
-}
-
