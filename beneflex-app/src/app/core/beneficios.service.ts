@@ -28,7 +28,7 @@ export class BeneficiosService {
   }
 }*/ //Wilson
 
-import { Injectable } from '@angular/core';
+/*import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { BeneficioCard } from './models/beneficio-card.model';
@@ -91,4 +91,53 @@ export class BeneficiosService {
 
     return this.http.post(url, payload);
   }
+}*/ //Duque
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { environment } from '../../environments/environment';
+import { UserService } from './services/user.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class BeneficiosService {
+
+  constructor(
+    private http: HttpClient,
+    private userService: UserService
+  ) {}
+
+  /**
+   * Obtiene los beneficios del usuario autenticado
+   */
+  getBeneficios(): Observable<any> {
+    const userId = this.userService.getUserId();
+
+    if (!userId) {
+      return throwError(() => new Error('Usuario no cargado aún'));
+    }
+
+    const url = `${environment.benefitsApiUrl}?userId=${userId}`;
+    return this.http.get(url);
+  }
+
+  /**
+   * Crear una nueva solicitud de beneficio (ej: vacaciones)
+   */
+  crearSolicitud(data: any): Observable<any> {
+    const userId = this.userService.getUserId();
+
+    if (!userId) {
+      return throwError(() => new Error('Usuario no cargado aún'));
+    }
+
+    return this.http.post(environment.createBenefitApiUrl, {
+      userId,
+      ...data
+    });
+  }
 }
+

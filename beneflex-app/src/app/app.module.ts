@@ -106,7 +106,8 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
   const protectedResourceMap = new Map<string, Array<string>>();
 
   // Todas las llamadas a tu API llevarán token
-  protectedResourceMap.set(environment.apiUrl, ['openid', 'profile', 'email']);
+  //protectedResourceMap.set(environment.apiUrl, ['openid', 'profile', 'email']);
+  protectedResourceMap.set(environment.functionsApiBaseUrl, ['openid', 'profile', 'email']);
 
   return {
     interactionType: InteractionType.Redirect,
