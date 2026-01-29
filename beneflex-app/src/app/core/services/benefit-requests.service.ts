@@ -12,8 +12,12 @@ export class BenefitRequestsService {
 
   constructor(private http: HttpClient) { }
 
-  getByUser(userId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
+  /*getByUser(userId: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/user/${userId}`);
+  }*/ //Duque
+
+  getByUser(userId: number) {
+    return this.http.get(`${environment.benefitsApiUrl}?userId=${userId}`);
   }
 
   getPendientes() {
