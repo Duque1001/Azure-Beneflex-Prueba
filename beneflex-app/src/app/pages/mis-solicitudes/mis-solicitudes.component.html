@@ -1,24 +1,30 @@
 <h2>Mis Solicitudes</h2>
 
-<table *ngIf="solicitudes.length > 0; else sinDatos">
-    <thead>
-        <tr>
-            <th>Beneficio</th>
-            <th>Días</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let s of solicitudes">
-            <td>{{ s.benefit?.name }}</td>
-            <td>{{ s.requested_days }}</td>
-            <td>{{ s.status }}</td>
-            <td>{{ s.created_at | date }}</td>
-        </tr>
-    </tbody>
-</table>
+<table class="tabla">
+  <thead>
+    <tr>
+      <th>Beneficio</th>
+      <th>Días</th>
+      <th>Estado</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
 
-<ng-template #sinDatos>
-    <p>No tienes solicitudes registradas.</p>
-</ng-template>
+  <tbody>
+    <!-- Si no hay solicitudes -->
+    <tr *ngIf="solicitudes.length === 0">
+      <td colspan="4">No tienes solicitudes registradas.</td>
+    </tr>
+
+    <!-- Pintar solicitudes -->
+    <tr *ngFor="let s of solicitudes">
+      <td>{{ s.benefitName || s.benefit_name || s.beneficio || s.benefit || '-' }}</td>
+
+      <td>{{ s.requestedDays ?? s.requested_days ?? s.dias ?? '-' }}</td>
+
+      <td>{{ s.status || s.estado || '-' }}</td>
+
+      <td>{{ (s.startDate || s.start_date || s.fecha) | date:'dd/MM/yyyy' }}</td>
+    </tr>
+  </tbody>
+</table>
