@@ -82,7 +82,14 @@ export class SolicitudModalComponent implements OnInit {
 }*/
 
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn
+} from '@angular/forms';
 import { BeneficioCard } from '../../core/models/beneficio-card.model';
 import { NotificationService } from '../../shared/services/notification.service';
 
@@ -102,8 +109,8 @@ export class SolicitudModalComponent implements OnInit {
 
   form!: FormGroup;
 
-  // para <input type="date"> en formato YYYY-MM-DD
-  minDate = new Date().toISOString().split('T')[0];
+  // minDate en formato YYYY-MM-DD pero usando FECHA LOCAL (no UTC)
+  minDate = this.formatLocalDate(new Date());
 
   constructor(
     private fb: FormBuilder,
@@ -118,19 +125,29 @@ export class SolicitudModalComponent implements OnInit {
     });
   }
 
-  // Validator: no permitir fecha anterior a hoy
+  // Convierte Date a YYYY-MM-DD en hora local
+  private formatLocalDate(d: Date): string {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // Validator: permite HOY, bloquea SOLO fechas anteriores a hoy
   private noPastDateValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value;
+      const value = control.value; // 'YYYY-MM-DD'
       if (!value) return null;
 
-      // value viene como 'YYYY-MM-DD'
-      const selected = new Date(value);
+      // Parse LOCAL
+      const [y, m, d] = value.split('-').map(Number);
+      const selected = new Date(y, m - 1, d);
       selected.setHours(0, 0, 0, 0);
 
       const today = new Date();
       today.setHours(0, 0, 0, 0);
 
+      // Solo invalida si es estrictamente menor (hoy es válido)
       return selected < today ? { pastDate: true } : null;
     };
   }
@@ -146,10 +163,14 @@ export class SolicitudModalComponent implements OnInit {
     const total = this.beneficio.days;
 
     // Si tiene medio día
-    if (total % 1 !== 0) dias.push(0.5);
+    if (total % 1 !== 0) {
+      dias.push(0.5);
+    }
 
     // Días completos
-    for (let i = 1; i <= Math.floor(total); i++) dias.push(i);
+    for (let i = 1; i <= Math.floor(total); i++) {
+      dias.push(i);
+    }
 
     return dias;
   }
@@ -164,7 +185,6 @@ export class SolicitudModalComponent implements OnInit {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
 
-      // Mensaje específico si la fecha es pasada
       if (this.form.get('fecha')?.errors?.['pastDate']) {
         this.notify.error('No se puede elegir fechas pasadas');
       } else {
@@ -182,4 +202,3 @@ export class SolicitudModalComponent implements OnInit {
     this.cerrar.emit(); // cierra el modal al confirmar
   }
 }
-
