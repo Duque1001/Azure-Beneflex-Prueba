@@ -64,23 +64,27 @@ export class SolicitudModalComponent implements OnInit {
   }
 
   onConfirmar() {
-    if (this.form.invalid) return;
+    // Si está inválido, muestra mensaje y marca campos en rojo
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.notify.error('Debes completar toda la información obligatoria para confirmar la solicitud');
+      return;
+    }
 
     this.confirmar.emit({
       ...this.form.value,
-      beneficio: this.beneficio
+      beneficio: this.beneficio,
     });
 
     this.form.reset();
-  }*/ // Wilson
-
+    this.cerrar.emit(); // cierra el modal al confirmar
+  }
+}*/
 
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Beneficio } from '../../core/models/beneficio.model';
+import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { BeneficioCard } from '../../core/models/beneficio-card.model';
 import { NotificationService } from '../../shared/services/notification.service';
-
 
 @Component({
   selector: 'app-solicitud-modal',
@@ -98,6 +102,9 @@ export class SolicitudModalComponent implements OnInit {
 
   form!: FormGroup;
 
+  // para <input type="date"> en formato YYYY-MM-DD
+  minDate = new Date().toISOString().split('T')[0];
+
   constructor(
     private fb: FormBuilder,
     private notify: NotificationService
@@ -105,10 +112,27 @@ export class SolicitudModalComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.fb.group({
-      fecha: ['', Validators.required],
+      fecha: ['', [Validators.required, this.noPastDateValidator()]],
       dias: [null, [Validators.required, Validators.min(0.5)]],
       comentario: ['']
     });
+  }
+
+  // Validator: no permitir fecha anterior a hoy
+  private noPastDateValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
+
+      // value viene como 'YYYY-MM-DD'
+      const selected = new Date(value);
+      selected.setHours(0, 0, 0, 0);
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      return selected < today ? { pastDate: true } : null;
+    };
   }
 
   get maxDias(): number {
@@ -119,18 +143,13 @@ export class SolicitudModalComponent implements OnInit {
     if (!this.beneficio || this.beneficio.days <= 0) return [];
 
     const dias: number[] = [];
-
     const total = this.beneficio.days;
 
     // Si tiene medio día
-    if (total % 1 !== 0) {
-      dias.push(0.5);
-    }
+    if (total % 1 !== 0) dias.push(0.5);
 
     // Días completos
-    for (let i = 1; i <= Math.floor(total); i++) {
-      dias.push(i);
-    }
+    for (let i = 1; i <= Math.floor(total); i++) dias.push(i);
 
     return dias;
   }
@@ -141,10 +160,16 @@ export class SolicitudModalComponent implements OnInit {
   }
 
   onConfirmar() {
-    // ✅ Si está inválido, muestra mensaje y marca campos en rojo
+    // Si está inválido, muestra mensaje y marca campos en rojo
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.notify.error('Debes completar toda la información obligatoria para confirmar la solicitud');
+
+      // Mensaje específico si la fecha es pasada
+      if (this.form.get('fecha')?.errors?.['pastDate']) {
+        this.notify.error('No se puede elegir fechas pasadas');
+      } else {
+        this.notify.error('Debes completar toda la información obligatoria para confirmar la solicitud');
+      }
       return;
     }
 
@@ -154,6 +179,7 @@ export class SolicitudModalComponent implements OnInit {
     });
 
     this.form.reset();
-    this.cerrar.emit(); // ✅ cierra el modal al confirmar
+    this.cerrar.emit(); // cierra el modal al confirmar
   }
 }
+

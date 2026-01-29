@@ -14,10 +14,10 @@ import { CommonModule } from '@angular/common';
 
 export class AprobarSolicitudesComponent implements OnInit {
 
-  // EXISTE la propiedad usada en el HTML
+  // Existe la propiedad usada en el HTML
   solicitudes: any[] = [];
 
-  // constructor BIEN declarado, dentro de la clase
+  // constructor
   constructor(private service: BenefitRequestsService) { }
 
   ngOnInit(): void {

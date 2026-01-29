@@ -9,7 +9,7 @@ import { Beneficio } from './models/beneficio.model';
 })
 export class ApiService {
 
-  private baseUrl = environment.apiUrl;
+  private baseUrl = environment.benefitsApiUrl;
 
   constructor(private http: HttpClient) { }
 
