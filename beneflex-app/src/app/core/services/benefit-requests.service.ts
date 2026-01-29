@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BenefitRequestsService {
 
-  private apiUrl = 'http://localhost:3000/benefit-requests';
+  private apiUrl = environment.benefitsApiUrl;
 
   constructor(private http: HttpClient) { }
 
