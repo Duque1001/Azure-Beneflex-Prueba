@@ -14,6 +14,7 @@ import { SolicitudModalComponent } from './shared/solicitud-modal/solicitud-moda
 import { MisSolicitudesComponent } from './pages/mis-solicitudes/mis-solicitudes.component';
 import { AprobarSolicitudesComponent } from './pages/aprobar-solicitudes/aprobar-solicitudes.component';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
+import { FormsModule } from '@angular/forms';
 
 
 // MSAL
@@ -94,6 +95,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MatSnackBarModule,
     MsalModule,
     AppComponent,
+    FormsModule,
   ],
   providers: [
     // Providers MSAL

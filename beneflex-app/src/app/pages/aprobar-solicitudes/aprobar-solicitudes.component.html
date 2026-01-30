@@ -1,13 +1,4 @@
-<!-- <div *ngFor="let req of solicitudes" class="card">
-    <p><strong>Usuario:</strong> {{ req.user?.nombre || req.user_id }}</p>
-    <p><strong>Beneficio:</strong> {{ req.benefit?.name || req.benefit_id }}</p>
-    <p><strong>Días:</strong> {{ req.requested_days }}</p>
-
-    <button (click)="aprobar(req.id)"> Aprobar</button>
-    <button (click)="rechazar(req.id)"> Rechazar</button>
-</div> Wilson-->
-
-<div *ngIf="cargando">Cargando pendientes...</div>
+<!-- <div *ngIf="cargando">Cargando pendientes...</div>
 
 <div *ngFor="let req of solicitudes" class="card">
   <p><strong>Usuario:</strong> {{ req.userName }}</p>
@@ -18,6 +9,60 @@
 
   <button (click)="aprobar(req.id)">Aprobar</button>
   <button (click)="rechazar(req.id)">Rechazar</button>
+</div> -->
+
+<div class="approval-page">
+
+  <div class="nav-buttons" *ngIf="total > 1">
+    <button class="nav" (click)="prev()" aria-label="Anterior">
+      ‹
+    </button>
+    <button class="nav" (click)="next()" aria-label="Siguiente">
+      ›
+    </button>
+  </div>
+
+  <div class="card" *ngIf="current as req; else emptyState">
+
+    <h2 class="title">Solicitud de beneficio - {{ req.employee_name || 'Usuario' }}</h2>
+
+    <div class="section-title">Detalles de la solicitud</div>
+
+    <div class="details">
+      <p><strong>Solicitante:</strong> {{ req.employee_name || '—' }}</p>
+      <p><strong>Beneficio:</strong> {{ req.benefit_name || '—' }}</p>
+      <p><strong>Fecha/Desde:</strong> {{ req.start_date | date:'dd MMMM yyyy' }}</p>
+      <p><strong>Días:</strong> {{ req.requested_days ?? '—' }}</p>
+      <p><strong>Estado:</strong> {{ req.status || 'PENDING' }}</p>
+    </div>
+
+    <textarea
+      class="comment"
+      [(ngModel)]="comentario"
+      placeholder="Escriba comentarios u observaciones (Opcional)"
+      rows="4"></textarea>
+
+    <div class="actions">
+      <button class="btn approve" (click)="aprobar()">Aprobar</button>
+      <button class="btn reject" (click)="rechazar()">Rechazar</button>
+    </div>
+
+    <div class="counter" *ngIf="total">
+      {{ currentIndex + 1 }} / {{ total }}
+    </div>
+
+  </div>
+
+  <ng-template #emptyState>
+    <div class="card empty">
+      <h2 class="title">Aprobaciones</h2>
+      <p *ngIf="cargando">Cargando pendientes…</p>
+      <p *ngIf="!cargando">No hay solicitudes pendientes.</p>
+      <button class="btn refresh" (click)="cargarPendientes()">Recargar</button>
+    </div>
+  </ng-template>
+
 </div>
+
 
 
