@@ -148,6 +148,7 @@ import { AprobarSolicitudesComponent } from './pages/aprobar-solicitudes/aprobar
 
 import { BenefitCardComponent } from './shared/benefit-card/benefit-card.component';
 import { SolicitudModalComponent } from './shared/solicitud-modal/solicitud-modal.component';
+import { ConfirmDialogComponent } from './shared/confirm-dialog/confirm-dialog.component';
 
 // MSAL
 import {
@@ -212,7 +213,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     BenefitCardComponent,
     SolicitudModalComponent,
     MisSolicitudesComponent,
-
+    ConfirmDialogComponent,
     AprobarSolicitudesComponent
   ],
   imports: [
