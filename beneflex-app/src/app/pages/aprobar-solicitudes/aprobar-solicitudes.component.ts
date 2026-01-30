@@ -70,10 +70,7 @@ export class AprobarSolicitudesComponent implements OnInit {
   cargando = false;
   solicitudes: PendingRequest[] = [];
 
-  // navegación
   currentIndex = 0;
-
-  // comentario del aprobador
   comentario = '';
 
   constructor(
@@ -90,7 +87,6 @@ export class AprobarSolicitudesComponent implements OnInit {
 
     this.service.getPendientes().subscribe({
       next: (data: any) => {
-        // el API te devuelve array directo
         this.solicitudes = Array.isArray(data) ? data : (data?.data ?? []);
         this.currentIndex = 0;
         this.comentario = '';
@@ -125,14 +121,24 @@ export class AprobarSolicitudesComponent implements OnInit {
     this.comentario = '';
   }
 
+  // ✅ dd-MM-yyyy
+  formatDateDDMMYYYY(value?: string): string {
+    if (!value) return '—';
+    const d = new Date(value);
+    if (isNaN(d.getTime())) return '—';
+
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${dd}-${mm}-${yyyy}`;
+  }
+
   aprobar(): void {
     const req = this.current;
     if (!req) return;
 
-    // endpoint real de aprobar/rechazar
+    // Cuando exista endpoint real, aquí llamas el service con req.id y comentario
     this.notify.success(`Aprobado (demo) - solicitud #${req.id}`);
-    // cuando haya endpoint , aquí llamar al service y luego refrescar
-    // this.service.updateStatus(req.id, 'APPROVED', this.comentario).subscribe(...)
   }
 
   rechazar(): void {
@@ -140,7 +146,6 @@ export class AprobarSolicitudesComponent implements OnInit {
     if (!req) return;
 
     this.notify.success(`Rechazado (demo) - solicitud #${req.id}`);
-    // cuando tengas endpoint, llamar service y refrescar
   }
 }
 

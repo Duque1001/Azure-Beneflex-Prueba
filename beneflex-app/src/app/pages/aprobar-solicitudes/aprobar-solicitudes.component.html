@@ -14,12 +14,8 @@
 <div class="approval-page">
 
   <div class="nav-buttons" *ngIf="total > 1">
-    <button class="nav" (click)="prev()" aria-label="Anterior">
-      ‹
-    </button>
-    <button class="nav" (click)="next()" aria-label="Siguiente">
-      ›
-    </button>
+    <button class="nav" (click)="prev()" aria-label="Anterior">‹</button>
+    <button class="nav" (click)="next()" aria-label="Siguiente">›</button>
   </div>
 
   <div class="card" *ngIf="current as req; else emptyState">
@@ -31,14 +27,15 @@
     <div class="details">
       <p><strong>Solicitante:</strong> {{ req.employee_name || '—' }}</p>
       <p><strong>Beneficio:</strong> {{ req.benefit_name || '—' }}</p>
-      <p><strong>Fecha/Desde:</strong> {{ req.start_date | date:'dd MMMM yyyy' }}</p>
+      <p><strong>Fecha/Desde:</strong> {{ formatDateDDMMYYYY(req.start_date) }}</p>
       <p><strong>Días:</strong> {{ req.requested_days ?? '—' }}</p>
       <p><strong>Estado:</strong> {{ req.status || 'PENDING' }}</p>
     </div>
 
     <textarea
       class="comment"
-      [(ngModel)]="comentario"
+      [value]="comentario"
+      (input)="comentario = $any($event.target).value"
       placeholder="Escriba comentarios u observaciones (Opcional)"
       rows="4"></textarea>
 
@@ -63,6 +60,4 @@
   </ng-template>
 
 </div>
-
-
 
