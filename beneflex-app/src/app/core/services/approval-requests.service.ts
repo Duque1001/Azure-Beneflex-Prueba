@@ -33,7 +33,7 @@ export class ApprovalRequestsService {
 
 }*/
 
-import { Injectable } from '@angular/core';
+/*import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -57,6 +57,45 @@ export class ApprovalRequestsService {
   getPendientes(): Observable<PendingRequestApi[]> {
     return this.http.get<PendingRequestApi[]>(environment.pendingRequestsApiUrl);
   }
+}*/
+
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
+
+export type PendingRequestApi = {
+  id: number;
+  employee_name?: string;
+  benefit_name?: string;
+  requested_days?: number;
+  start_date?: string;
+  status?: string;
+};
+
+export type UpdateRequestStatusPayload = {
+  requestId: number;
+  status: 'APPROVED' | 'REJECTED';
+  comment: string;
+};
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ApprovalRequestsService {
+  constructor(private http: HttpClient) {}
+
+  getPendientes(): Observable<PendingRequestApi[]> {
+    return this.http.get<PendingRequestApi[]>(environment.pendingRequestsApiUrl);
+  }
+
+  // Llamar API para aprobar/rechazar
+  updateRequestStatus(payload: UpdateRequestStatusPayload): Observable<any> {
+    // POST para update.
+
+    return this.http.post(environment.updateRequestStatusApiUrl, payload);
+  }
 }
+
 
 

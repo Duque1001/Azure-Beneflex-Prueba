@@ -13,20 +13,19 @@
 
 <div class="approval-page">
 
-  <!-- Card -->
   <div class="card" *ngIf="current as req; else emptyState">
 
-    <!-- Flechas más cerca del card -->
+    <!-- Flechas -->
     <button class="nav nav-left"
             (click)="prev()"
-            [disabled]="isFirst"
+            [disabled]="isFirst || cargando"
             aria-label="Anterior">
       ‹
     </button>
 
     <button class="nav nav-right"
             (click)="next()"
-            [disabled]="isLast"
+            [disabled]="isLast || cargando"
             aria-label="Siguiente">
       ›
     </button>
@@ -46,12 +45,18 @@
     <textarea
       class="comment"
       [(ngModel)]="comentario"
+      [disabled]="cargando"
       placeholder="Escriba comentarios u observaciones (Opcional)"
       rows="4"></textarea>
 
     <div class="actions">
-      <button class="btn approve" (click)="aprobar()">Aprobar</button>
-      <button class="btn reject" (click)="rechazar()">Rechazar</button>
+      <!-- ahora abren confirm -->
+      <button class="btn approve" (click)="openConfirm('APPROVED')" [disabled]="cargando">
+        Aprobar
+      </button>
+      <button class="btn reject" (click)="openConfirm('REJECTED')" [disabled]="cargando">
+        Rechazar
+      </button>
     </div>
 
     <div class="counter">
@@ -65,8 +70,22 @@
       <h2 class="title">Aprobaciones</h2>
       <p *ngIf="cargando">Cargando pendientes…</p>
       <p *ngIf="!cargando">No hay solicitudes pendientes.</p>
-      <button class="btn refresh" (click)="cargarPendientes()">Recargar</button>
+      <button class="btn refresh" (click)="cargarPendientes()" [disabled]="cargando">Recargar</button>
     </div>
   </ng-template>
 
+  <!-- POPUP CONFIRMACIÓN -->
+  <div class="confirm-overlay" *ngIf="confirmVisible">
+    <div class="confirm-modal">
+      <h3>Confirmación</h3>
+      <p>{{ confirmText }}</p>
+
+      <div class="confirm-actions">
+        <button class="btn cancel" (click)="closeConfirm()" [disabled]="cargando">No</button>
+        <button class="btn ok" (click)="confirmYes()" [disabled]="cargando">Sí</button>
+      </div>
+    </div>
+  </div>
+
 </div>
+

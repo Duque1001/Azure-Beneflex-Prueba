@@ -8,4 +8,5 @@ export const environment = {
   myRequestsApiUrl: 'https://beneflex-functions-ajfsbxbfetexc9cu.canadacentral-01.azurewebsites.net/api/get-my-requests',
   approvalsApiUrl: 'https://beneflex-functions-ajfsbxbfetexc9cu.canadacentral-01.azurewebsites.net/api/get-my-requests',
   pendingRequestsApiUrl: 'https://beneflex-functions-ajfsbxbfetexc9cu.canadacentral-01.azurewebsites.net/api/get-pending-requests',
+  updateRequestStatusApiUrl: 'https://beneflex-functions-ajfsbxbfetexc9cu.canadacentral-01.azurewebsites.net/api/update-request-status',
 };
