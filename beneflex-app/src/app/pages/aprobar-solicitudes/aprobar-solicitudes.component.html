@@ -14,7 +14,7 @@
   <p><strong>Beneficio:</strong> {{ req.benefitName }}</p>
   <p><strong>Días:</strong> {{ req.requestedDays }}</p>
   <p><strong>Estado:</strong> {{ req.status }}</p>
-  <p *ngIf="req.startDate"><strong>Fecha:</strong> {{ req.startDate }}</p>
+  <p><strong>Fecha:</strong> {{ req.startDate | date:'dd-MM-yyyy' }}</p>
 
   <button (click)="aprobar(req.id)">Aprobar</button>
   <button (click)="rechazar(req.id)">Rechazar</button>
