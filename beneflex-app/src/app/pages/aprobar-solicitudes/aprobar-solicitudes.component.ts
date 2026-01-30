@@ -46,17 +46,17 @@ export class AprobarSolicitudesComponent implements OnInit {
 }*/
 
 import { Component, OnInit } from '@angular/core';
-import { ApprovalRequestsService } from '../../core/services/approval-requests.service';
+import { ApprovalRequestsService, PendingRequestApi } from '../../core/services/approval-requests.service';
 import { NotificationService } from '../../shared/services/notification.service';
 
-type PendingRequest = {
+type PendingRequestUI = {
   id: number;
-  employee_name?: string;
-  benefit_name?: string;
-  requested_days?: number;
-  start_date?: string;
-  status?: string;
-  comment?: string;
+  employeeName: string;
+  benefitName: string;
+  requestedDays: number | null;
+  startDateRaw: string | null;
+  startDateUI: string; // dd-mm-aaaa
+  status: string;
 };
 
 @Component({
@@ -68,7 +68,7 @@ type PendingRequest = {
 export class AprobarSolicitudesComponent implements OnInit {
 
   cargando = false;
-  solicitudes: PendingRequest[] = [];
+  solicitudes: PendingRequestUI[] = [];
 
   currentIndex = 0;
   comentario = '';
@@ -86,8 +86,19 @@ export class AprobarSolicitudesComponent implements OnInit {
     this.cargando = true;
 
     this.service.getPendientes().subscribe({
-      next: (data: any) => {
-        this.solicitudes = Array.isArray(data) ? data : (data?.data ?? []);
+      next: (data: PendingRequestApi[]) => {
+        const arr = Array.isArray(data) ? data : [];
+
+        this.solicitudes = arr.map((x) => ({
+          id: x.id,
+          employeeName: x.employee_name?.trim() || '—',
+          benefitName: x.benefit_name?.trim() || '—',
+          requestedDays: (x.requested_days ?? null),
+          startDateRaw: x.start_date ?? null,
+          startDateUI: this.toDDMMYYYY(x.start_date),
+          status: (x.status || 'PENDING').toUpperCase(),
+        }));
+
         this.currentIndex = 0;
         this.comentario = '';
         this.cargando = false;
@@ -100,31 +111,10 @@ export class AprobarSolicitudesComponent implements OnInit {
     });
   }
 
-  get total(): number {
-    return this.solicitudes.length;
-  }
-
-  get current(): PendingRequest | null {
-    if (!this.solicitudes.length) return null;
-    return this.solicitudes[this.currentIndex] ?? null;
-  }
-
-  prev(): void {
-    if (!this.total) return;
-    this.currentIndex = (this.currentIndex - 1 + this.total) % this.total;
-    this.comentario = '';
-  }
-
-  next(): void {
-    if (!this.total) return;
-    this.currentIndex = (this.currentIndex + 1) % this.total;
-    this.comentario = '';
-  }
-
-  // ✅ dd-MM-yyyy
-  formatDateDDMMYYYY(value?: string): string {
-    if (!value) return '—';
-    const d = new Date(value);
+  // dd-mm-aaaa
+  private toDDMMYYYY(iso?: string): string {
+    if (!iso) return '—';
+    const d = new Date(iso);
     if (isNaN(d.getTime())) return '—';
 
     const dd = String(d.getDate()).padStart(2, '0');
@@ -133,11 +123,40 @@ export class AprobarSolicitudesComponent implements OnInit {
     return `${dd}-${mm}-${yyyy}`;
   }
 
+  get total(): number {
+    return this.solicitudes.length;
+  }
+
+  get current(): PendingRequestUI | null {
+    return this.total ? this.solicitudes[this.currentIndex] : null;
+  }
+
+  // ✅ Deshabilitar sin wrap-around
+  get isFirst(): boolean {
+    return this.currentIndex <= 0;
+  }
+
+  get isLast(): boolean {
+    return this.total ? this.currentIndex >= this.total - 1 : true;
+  }
+
+  prev(): void {
+    if (this.isFirst) return;
+    this.currentIndex -= 1;
+    this.comentario = '';
+  }
+
+  next(): void {
+    if (this.isLast) return;
+    this.currentIndex += 1;
+    this.comentario = '';
+  }
+
   aprobar(): void {
     const req = this.current;
     if (!req) return;
 
-    // Cuando exista endpoint real, aquí llamas el service con req.id y comentario
+    // Demo (hasta que exista endpoint real)
     this.notify.success(`Aprobado (demo) - solicitud #${req.id}`);
   }
 
@@ -145,8 +164,10 @@ export class AprobarSolicitudesComponent implements OnInit {
     const req = this.current;
     if (!req) return;
 
+    // Demo (hasta que exista endpoint real)
     this.notify.success(`Rechazado (demo) - solicitud #${req.id}`);
   }
 }
+
 
 

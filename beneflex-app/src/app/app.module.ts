@@ -213,7 +213,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     SolicitudModalComponent,
     MisSolicitudesComponent,
 
-    AprobarSolicitudesComponent // ✅ IMPORTANTE: YA NO VA COMENTADO
+    AprobarSolicitudesComponent
   ],
   imports: [
     BrowserModule,
@@ -225,7 +225,6 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MatSnackBarModule,
     MsalModule,
 
-    // AppComponent standalone (como lo tienes)
     AppComponent
   ],
   providers: [

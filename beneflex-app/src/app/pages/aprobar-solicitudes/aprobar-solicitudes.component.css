@@ -1,114 +1,109 @@
 .approval-page{
-  position: relative;
-  min-height: calc(100vh - 80px);
+  min-height: calc(100vh - 64px);
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  padding: 40px 16px;
+  padding: 24px;
 }
 
 .card{
-  width: 100%;
-  max-width: 650px;
+  position: relative;
+  width: min(820px, 92vw);
   background: #fff;
-  border-radius: 10px;
-  padding: 28px 28px 22px 28px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  border-radius: 14px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.12);
+  padding: 28px 34px 22px;
 }
 
 .title{
   text-align: center;
   font-size: 22px;
-  margin: 0 0 18px 0;
-  font-weight: 700;
+  margin: 0 0 14px;
 }
 
 .section-title{
   text-align: center;
   font-weight: 700;
-  margin: 16px 0 12px 0;
+  margin: 10px 0 16px;
 }
 
 .details{
-  width: fit-content;
-  margin: 0 auto 18px auto;
-}
-
-.details p{
-  margin: 6px 0;
-  line-height: 1.2;
+  text-align: center;
+  line-height: 1.8;
+  margin-bottom: 18px;
 }
 
 .comment{
   width: 100%;
   border: 2px solid #6a1b9a;
-  border-radius: 8px;
-  padding: 12px;
-  resize: vertical;
+  border-radius: 10px;
+  padding: 14px;
   outline: none;
-  margin-top: 10px;
+  resize: vertical;
 }
 
 .actions{
   display: flex;
-  justify-content: center;
   gap: 18px;
+  justify-content: center;
   margin-top: 18px;
 }
 
 .btn{
-  min-width: 140px;
+  min-width: 170px;
   padding: 10px 18px;
-  border-radius: 25px;
+  border-radius: 999px;
   border: 2px solid #6a1b9a;
-  background: #fff;
+  background: transparent;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-.btn.approve{
-  color: #6a1b9a;
-}
-
-.btn.reject{
-  color: #6a1b9a;
-}
-
-.btn.refresh{
-  margin-top: 14px;
+.btn:hover{
+  filter: brightness(0.98);
 }
 
 .counter{
   text-align: center;
-  margin-top: 14px;
-  color: #555;
-  font-size: 14px;
+  margin-top: 12px;
+  font-weight: 600;
+  opacity: .85;
 }
 
-.nav-buttons{
+/* Flechas MÁS pegadas al card */
+.nav{
   position: absolute;
-  left: 0;
-  right: 0;
   top: 50%;
   transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  padding: 0 24px;
-  pointer-events: none;
-}
-
-.nav{
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
+  width: 46px;
+  height: 46px;
+  border-radius: 999px;
   border: none;
-  background: rgba(0,0,0,0.08);
-  font-size: 34px;
-  line-height: 52px;
+  background: rgba(0,0,0,.08);
   cursor: pointer;
-  pointer-events: auto;
+  font-size: 28px;
+  line-height: 46px;
+  text-align: center;
 }
 
-.empty{
+.nav-left{
+  left: -56px;
+}
+
+.nav-right{
+  right: -56px;
+}
+
+.nav:disabled{
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+/* Empty card */
+.card.empty{
   text-align: center;
+}
+
+.btn.refresh{
+  margin-top: 12px;
 }
