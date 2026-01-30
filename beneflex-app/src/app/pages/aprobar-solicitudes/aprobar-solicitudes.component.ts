@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+/*import { Component, OnInit } from '@angular/core';
 import { BenefitRequestsService } from '../../core/services/benefit-requests.service';
 import { CommonModule } from '@angular/common';
-
-
 
 @Component({
   selector: 'app-aprobar-solicitudes',
@@ -10,7 +8,6 @@ import { CommonModule } from '@angular/common';
   templateUrl: './aprobar-solicitudes.component.html',
   styleUrl: './aprobar-solicitudes.component.css'
 })
-
 
 export class AprobarSolicitudesComponent implements OnInit {
 
@@ -36,15 +33,15 @@ export class AprobarSolicitudesComponent implements OnInit {
     });
   }
 
-  /*aprobar(id: number) {
-    this.service.updateStatus(id, 'APPROVED')
-      .subscribe(() => this.cargarSolicitudes());
-  }
+  // aprobar(id: number) {
+  //   this.service.updateStatus(id, 'APPROVED')
+  //     .subscribe(() => this.cargarSolicitudes());
+  // }
 
-  rechazar(id: number) {
-    this.service.updateStatus(id, 'REJECTED')
-      .subscribe(() => this.cargarSolicitudes());
-  }*/
+  // rechazar(id: number) {
+  //   this.service.updateStatus(id, 'REJECTED')
+  //     .subscribe(() => this.cargarSolicitudes());
+  // }
 
   aprobar(id: number) {
     this.service.updateStatus(id, 'APPROVED').subscribe(() => {
@@ -58,4 +55,47 @@ export class AprobarSolicitudesComponent implements OnInit {
     });
   }
 
+}*/
+
+import { Component, OnInit } from '@angular/core';
+import { ApprovalRequestsService } from '../../core/services/approval-requests.service';
+
+@Component({
+  selector: 'app-aprobar-solicitudes',
+  templateUrl: './aprobar-solicitudes.component.html',
+  styleUrl: './aprobar-solicitudes.component.css'
+})
+export class AprobarSolicitudesComponent implements OnInit {
+
+  solicitudes: any[] = [];
+
+  constructor(private service: ApprovalRequestsService) {}
+
+  ngOnInit(): void {
+    this.cargarPendientes();
+  }
+
+  cargarPendientes() {
+    this.service.getPendientes().subscribe({
+      next: (data: any[]) => {
+        this.solicitudes = data;
+      },
+      error: (err: unknown) => {
+        console.error('Error cargando pendientes', err);
+      }
+    });
+  }
+
+  aprobar(id: number) {
+    this.service.updateStatus(id, 'APPROVED').subscribe(() => {
+      this.cargarPendientes();
+    });
+  }
+
+  rechazar(id: number) {
+    this.service.updateStatus(id, 'REJECTED').subscribe(() => {
+      this.cargarPendientes();
+    });
+  }
 }
+
