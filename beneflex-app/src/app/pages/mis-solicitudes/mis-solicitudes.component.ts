@@ -61,7 +61,7 @@ export class MisSolicitudesComponent implements OnInit {
       return;
     }
 
-    this.service.getByUser(userId).subscribe({
+    /*this.service.getByUser(userId).subscribe({
       next: (data: any) => {
         console.log('Solicitudes recibidas RAW:', data);
 
@@ -72,7 +72,15 @@ export class MisSolicitudesComponent implements OnInit {
         console.error('Error cargando solicitudes', err);
         this.notify.error('No se pudieron cargar tus solicitudes');
       }
+    });*/
+    this.service.getMyRequests().subscribe({
+      next: (data: any) => {
+        console.log('Solicitudes recibidas RAW:', data);
+        this.solicitudes = Array.isArray(data) ? data : (data?.data ?? []);
+      },
+      error: (err: any) => console.error('Error cargando solicitudes', err)
     });
+
   }
 }
 
