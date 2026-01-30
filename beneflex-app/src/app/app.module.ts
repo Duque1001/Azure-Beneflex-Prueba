@@ -84,7 +84,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     BenefitCardComponent,
     SolicitudModalComponent,
     MisSolicitudesComponent,
-    AprobarSolicitudesComponent
+    //AprobarSolicitudesComponent
   ],
   imports: [
     BrowserModule,

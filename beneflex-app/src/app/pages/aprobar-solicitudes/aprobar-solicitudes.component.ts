@@ -59,9 +59,16 @@ export class AprobarSolicitudesComponent implements OnInit {
 
 import { Component, OnInit } from '@angular/core';
 import { ApprovalRequestsService } from '../../core/services/approval-requests.service';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-aprobar-solicitudes',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ],
   templateUrl: './aprobar-solicitudes.component.html',
   styleUrl: './aprobar-solicitudes.component.css'
 })
