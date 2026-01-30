@@ -1,19 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+
+export type PendingRequest = {
+  id: number;
+  user_id?: number;
+  benefit_id?: number;
+  requested_days?: number;
+  status?: string;
+  created_at?: string;
+
+  // por si el backend ya hace join
+  user?: { nombre?: string; name?: string; email?: string };
+  benefit?: { name?: string; title?: string };
+};
 
 @Injectable({ providedIn: 'root' })
 export class ApprovalRequestsService {
-
-  private apiUrl = environment.approvalsApiUrl;
-
   constructor(private http: HttpClient) {}
 
-  getPendientes() {
-    return this.http.get<any[]>(`${this.apiUrl}/pending`);
+  // Endpoint
+  getPendientes(): Observable<PendingRequest[]> {
+    return this.http.get<PendingRequest[]>(environment.pendingRequestsApiUrl);
   }
 
-  updateStatus(id: number, status: 'APPROVED' | 'REJECTED') {
-    return this.http.patch(`${this.apiUrl}/${id}/status`, { status });
+  // endpoint para aprobar/rechazar
+  /*
+  updateStatus(id: number, status: 'APPROVED' | 'REJECTED'): Observable<any> {
+    return this.http.patch(environment.updateRequestStatusApiUrl, { id, status });
   }
+  */
 }
+

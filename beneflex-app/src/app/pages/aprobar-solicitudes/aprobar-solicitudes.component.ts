@@ -58,23 +58,21 @@ export class AprobarSolicitudesComponent implements OnInit {
 }*/
 
 import { Component, OnInit } from '@angular/core';
-import { ApprovalRequestsService } from '../../core/services/approval-requests.service';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ApprovalRequestsService, PendingRequest } from '../../core/services/approval-requests.service';
 
 @Component({
   selector: 'app-aprobar-solicitudes',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ],
+  imports: [CommonModule],
   templateUrl: './aprobar-solicitudes.component.html',
-  styleUrl: './aprobar-solicitudes.component.css'
+  styleUrl: './aprobar-solicitudes.component.css',
 })
 export class AprobarSolicitudesComponent implements OnInit {
 
-  solicitudes: any[] = [];
+  solicitudes: PendingRequest[] = [];
+  cargando = false;
+  errorMsg = '';
 
   constructor(private service: ApprovalRequestsService) {}
 
@@ -82,27 +80,32 @@ export class AprobarSolicitudesComponent implements OnInit {
     this.cargarPendientes();
   }
 
-  cargarPendientes() {
+  cargarPendientes(): void {
+    this.cargando = true;
+    this.errorMsg = '';
+
     this.service.getPendientes().subscribe({
-      next: (data: any[]) => {
-        this.solicitudes = data;
+      next: (data: PendingRequest[]) => {
+        console.log('Pendientes RAW:', data);
+        this.solicitudes = Array.isArray(data) ? data : [];
+        this.cargando = false;
       },
       error: (err: unknown) => {
         console.error('Error cargando pendientes', err);
-      }
+        this.errorMsg = 'No se pudieron cargar las aprobaciones.';
+        this.cargando = false;
+      },
     });
   }
 
-  aprobar(id: number) {
-    this.service.updateStatus(id, 'APPROVED').subscribe(() => {
-      this.cargarPendientes();
-    });
+  // Solo si existe endpoint real en backend
+  aprobar(id: number): void {
+    console.warn('No existe endpoint para aprobar aún. id:', id);
+    // this.service.updateStatus(id, 'APPROVED').subscribe(() => this.cargarPendientes());
   }
 
-  rechazar(id: number) {
-    this.service.updateStatus(id, 'REJECTED').subscribe(() => {
-      this.cargarPendientes();
-    });
+  rechazar(id: number): void {
+    console.warn('No existe endpoint para rechazar aún. id:', id);
+    // this.service.updateStatus(id, 'REJECTED').subscribe(() => this.cargarPendientes());
   }
 }
-
