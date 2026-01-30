@@ -98,7 +98,10 @@ export class MisSolicitudesComponent implements OnInit {
     this.cargando = true;
     this.requestsService.getMyRequests(Number(userId)).subscribe({
       next: (data: MyRequest[]) => {
-        this.solicitudes = Array.isArray(data) ? data : [];
+        const all = Array.isArray(data) ? data : [];
+
+        this.solicitudes = all.filter( req => (req.status ?? 'PENDING') === 'PENDING');
+
         this.cargando = false;
       },
       error: (err: any) => {
@@ -121,7 +124,7 @@ export class MisSolicitudesComponent implements OnInit {
     });
   }
 
-  // icono según beneficio (puedes extenderlo)
+  // icono según beneficio
   iconFor(name?: string): string {
     const n = (name || '').toLowerCase();
     if (n.includes('cumple')) return '🎂';
@@ -133,7 +136,7 @@ export class MisSolicitudesComponent implements OnInit {
   }
 
   canCancel(req: MyRequest): boolean {
-    // normalmente solo se cancela si está pendiente
+    // solo se cancela si está pendiente
     return (req.status || 'PENDING') === 'PENDING';
   }
 
