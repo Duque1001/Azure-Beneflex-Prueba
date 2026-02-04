@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="icon-wrap" *ngIf="iconSrc">
+    <img class="icon" [src]="iconSrc" [alt]="title" />
+  </div>
+
+  <h3>{{ title }}</h3>
+  <p class="days">{{ days }} días</p>
+  <p>Disponibles</p>
+
+  <button [disabled]="days === 0" (click)="onSolicitar()">
+    + Solicitar
+  </button>
+</div>

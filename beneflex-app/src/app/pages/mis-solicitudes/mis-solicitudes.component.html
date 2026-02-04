@@ -1,0 +1,77 @@
+<!-- <h2>Mis Solicitudes</h2>
+
+<table class="tabla">
+  <thead>
+    <tr>
+      <th>Beneficio</th>
+      <th>Días</th>
+      <th>Estado</th>
+      <th>Fecha</th>
+    </tr>
+  </thead>
+
+  <tbody>
+
+    <tr *ngIf="solicitudes.length === 0">
+      <td colspan="4">No tienes solicitudes registradas.</td>
+    </tr>
+
+    <tr *ngFor="let s of solicitudes">
+      <td>{{ s.benefitName || s.benefit_name || s.beneficio || s.benefit || '-' }}</td>
+
+      <td>{{ s.requestedDays ?? s.requested_days ?? s.dias ?? '-' }}</td>
+
+      <td>{{ s.status || s.estado || '-' }}</td>
+
+      <td>{{ (s.startDate || s.start_date || s.fecha) | date:'dd/MM/yyyy' }}</td>
+    </tr>
+  </tbody>
+</table> -->
+
+<div class="page">
+  <h1 class="title">Mis Solicitudes</h1>
+
+  <div class="state" *ngIf="cargando">Cargando…</div>
+  <div class="state" *ngIf="!cargando && !solicitudes.length">No tienes solicitudes.</div>
+
+  <div class="list" *ngIf="!cargando && solicitudes.length">
+    <div class="item" *ngFor="let req of solicitudes">
+      <div class="icon">
+        <img
+          *ngIf="iconSrcFor(req.benefit_name) as src; else fallbackIcon"
+          class="benefit-icon"
+          [src]="src"
+          [alt]="req.benefit_name || 'Beneficio'" />
+        <ng-template #fallbackIcon>📌</ng-template>
+      </div>
+
+
+      <div class="info">
+        <div class="line"><b>Beneficio:</b> {{ req.benefit_name || '—' }}</div>
+        <div class="line"><b>Fecha/Desde:</b> {{ formatFechaLarga(req.start_date) }}</div>
+        <div class="line"><b>Días:</b> {{ req.requested_days ?? '—' }}</div>
+        <div class="line"><b>Estado:</b> {{ req.status || 'PENDING' }}</div>
+      </div>
+
+      <button
+        class="x"
+        title="Cancelar solicitud"
+        [disabled]="!canCancel(req)"
+        (click)="onClickCancel(req)">
+        ×
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP CONFIRMACIÓN -->
+<app-confirm-dialog
+  [visible]="confirmVisible"
+  [title]="confirmTitle"
+  [message]="confirmMessage"
+  confirmText="Sí, cancelar"
+  cancelText="No"
+  (cancel)="onCancelPopup()"
+  (confirm)="onConfirmPopup()">
+</app-confirm-dialog>
+

@@ -1,0 +1,16 @@
+<div class="grid">
+  <app-benefit-card
+    *ngFor="let b of beneficios"
+    [iconSrc]="b.iconSrc"
+    [title]="b.title"
+    [days]="b.days"
+    (solicitar)="abrirModal(b)">
+  </app-benefit-card>
+</div>
+
+<app-solicitud-modal
+  [visible]="modalVisible"
+  [beneficio]="beneficioSeleccionado"
+  (cerrar)="cerrarModal()"
+  (confirmar)="enviarSolicitud($event)">
+</app-solicitud-modal>

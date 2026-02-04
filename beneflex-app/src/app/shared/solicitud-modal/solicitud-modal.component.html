@@ -1,0 +1,73 @@
+<div class="overlay" *ngIf="visible">
+  <div class="modal">
+
+    <h2>Solicitar beneficio</h2>
+
+    <p>
+      Beneficio:
+      <strong>{{ beneficio?.title }}</strong>
+    </p>
+
+    <form [formGroup]="form">
+
+      <div class="field">
+        <label>Fecha a solicitar</label>
+
+        <!-- min = hoy para bloquear calendario -->
+        <input
+          type="date"
+          formControlName="fecha"
+          [min]="minDate"
+        />
+
+        <!-- Mensajes de error -->
+        <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['required']">
+          La fecha es obligatoria
+        </small>
+
+        <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['pastDate']">
+          No se puede elegir fechas pasadas
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Número de días</label>
+
+        <select formControlName="dias">
+          <option *ngFor="let d of diasDisponibles" [value]="d">
+            {{ d }}
+          </option>
+        </select>
+
+        <small *ngIf="form.get('dias')?.invalid && form.get('dias')?.touched">
+          Debes seleccionar al menos un día
+        </small>
+      </div>
+
+      <div class="field">
+        <label>Comentario</label>
+        <textarea rows="3" formControlName="comentario"></textarea>
+      </div>
+
+      <div class="error" *ngIf="form.get('dias')?.touched && form.get('dias')?.invalid">
+        <small *ngIf="form.get('dias')?.errors?.['required']">
+          Debes seleccionar los días
+        </small>
+        <small *ngIf="form.get('dias')?.errors?.['min']">
+          El mínimo permitido es medio día
+        </small>
+      </div>
+
+    </form>
+
+    <div class="actions">
+      <button class="cancel" (click)="onCerrar()">Cancelar</button>
+
+      <!--deshabilitar si inválido -->
+      <button class="confirm" type="button" (click)="onConfirmar()" [disabled]="form.invalid">
+        Confirmar
+      </button>
+    </div>
+
+  </div>
+</div>
