@@ -183,7 +183,6 @@ type PendingRequestUI = {
   employeeName: string;
   benefitName: string;
 
-  /** Ruta del icono para mostrar en UI */
   iconSrc: string | null;
 
   requestedDays: number | null;
