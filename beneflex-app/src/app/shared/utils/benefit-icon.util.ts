@@ -10,7 +10,6 @@ function normalize(text: string): string {
 export function benefitIconSrc(benefitName: string): string | null {
   const n = normalize(benefitName);
 
-  // OJO: el orden importa (primero los más específicos)
   if (n.includes('vacacion')) return 'assets/benefits/Vacaciones.png';
   if (n.includes('cumple')) return 'assets/benefits/DiaCumpleaños.png';
   if (n.includes('prepara') || n.includes('prepara tu viaje') || (n.includes('viaje') && n.includes('prepara'))) {
