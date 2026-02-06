@@ -59,11 +59,11 @@
       rows="4"></textarea>
 
     <div class="actions">
-      <!-- ahora abren confirm -->
-      <button class="btn approve" (click)="openConfirm('APPROVED')" [disabled]="cargando">
+
+      <button class="btn approve" (click)="openConfirm('APROBADO')" [disabled]="cargando">
         Aprobar
       </button>
-      <button class="btn reject" (click)="openConfirm('REJECTED')" [disabled]="cargando">
+      <button class="btn reject" (click)="openConfirm('RECHAZADO')" [disabled]="cargando">
         Rechazar
       </button>
     </div>

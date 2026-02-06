@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrl: './benefit-card.component.css'
 })
 export class BenefitCardComponent {
-  /** Ruta del icono (ej: assets/benefits/Vacaciones.png). */
+  // Ruta del icono
   @Input() iconSrc: string | null = null;
 
   @Input() title!: string;

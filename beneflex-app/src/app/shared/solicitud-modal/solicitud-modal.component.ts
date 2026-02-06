@@ -109,7 +109,7 @@ export class SolicitudModalComponent implements OnInit {
 
   form!: FormGroup;
 
-  // minDate en formato YYYY-MM-DD pero usando FECHA LOCAL (no UTC)
+  // minDate en formato YYYY-MM-DD
   minDate = this.formatLocalDate(new Date());
 
   constructor(
@@ -139,7 +139,6 @@ export class SolicitudModalComponent implements OnInit {
       const value = control.value; // 'YYYY-MM-DD'
       if (!value) return null;
 
-      // Parse LOCAL
       const [y, m, d] = value.split('-').map(Number);
       const selected = new Date(y, m - 1, d);
       selected.setHours(0, 0, 0, 0);

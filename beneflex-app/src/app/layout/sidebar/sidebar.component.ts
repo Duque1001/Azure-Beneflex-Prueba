@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
-  userRole = 'LEADER'; // luego lo traeremos del auth
+  userRole = 'LIDER';
 }

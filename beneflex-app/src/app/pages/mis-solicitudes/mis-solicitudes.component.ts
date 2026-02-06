@@ -102,7 +102,7 @@ export class MisSolicitudesComponent implements OnInit {
       next: (data: MyRequest[]) => {
         const all = Array.isArray(data) ? data : [];
 
-        this.solicitudes = all.filter( req => (req.status ?? 'PENDING') === 'PENDING');
+        this.solicitudes = all.filter( req => (req.status ?? 'PENDIENTE') === 'PENDIENTE');
 
         this.cargando = false;
       },
@@ -133,7 +133,7 @@ export class MisSolicitudesComponent implements OnInit {
 
   canCancel(req: MyRequest): boolean {
     // solo se cancela si está pendiente
-    return (req.status || 'PENDING') === 'PENDING';
+    return (req.status || 'PENDIENTE') === 'PENDIENTE';
   }
 
   onClickCancel(req: MyRequest): void {

@@ -10,6 +10,6 @@ export class UserService {
   getUserId(): number { return this.user?.id; }
 
   isLeader(): boolean {
-    return this.user?.role === 'LEADER';
+    return this.user?.role === 'LIDER';
   }
 }

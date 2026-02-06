@@ -133,7 +133,7 @@ export class VacacionesComponent implements OnInit {
   cargarBeneficios(): void {
     const userId = this.userService.getUserId();
 
-    // Reintenta hasta que el get-me haya cargado el usuario (con límite)
+    // Reintenta hasta que el get-me haya cargado el usuario
     if (!userId) {
       this.retries++;
 
@@ -226,7 +226,5 @@ export class VacacionesComponent implements OnInit {
     });
   }
 }
-
-//Duque
 
 

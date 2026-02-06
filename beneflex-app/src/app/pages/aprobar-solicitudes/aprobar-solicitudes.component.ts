@@ -191,7 +191,7 @@ type PendingRequestUI = {
   status: string;
 };
 
-type Decision = 'APPROVED' | 'REJECTED';
+type Decision = 'APROBADO' | 'RECHAZADO';
 
 @Component({
   selector: 'app-aprobar-solicitudes',
@@ -239,7 +239,7 @@ export class AprobarSolicitudesComponent implements OnInit {
             requestedDays: (x.requested_days ?? null),
             startDateRaw: x.start_date ?? null,
             startDateUI: this.toDDMMYYYY(x.start_date),
-            status: (x.status || 'PENDING').toUpperCase(),
+            status: (x.status || 'PENDIENTE').toUpperCase(),
           };
         });
 
@@ -270,7 +270,7 @@ export class AprobarSolicitudesComponent implements OnInit {
       const yyyy = Number(m[1]);
       const mm = Number(m[2]);
       const dd = Number(m[3]);
-      d = new Date(yyyy, mm - 1, dd); // local, sin desfase por UTC
+      d = new Date(yyyy, mm - 1, dd);
     } else {
       d = new Date(iso);
     }
@@ -321,7 +321,7 @@ export class AprobarSolicitudesComponent implements OnInit {
 
     this.pendingDecision = decision;
     this.confirmText =
-      decision === 'APPROVED'
+      decision === 'APROBADO'
         ? '¿Estás seguro de APROBAR esta solicitud?'
         : '¿Estás seguro de RECHAZAR esta solicitud?';
 
@@ -357,7 +357,7 @@ export class AprobarSolicitudesComponent implements OnInit {
         this.closeConfirm();
 
         this.notify.success(
-          decision === 'APPROVED'
+          decision === 'APROBADO'
             ? `Solicitud #${req.id} aprobada`
             : `Solicitud #${req.id} rechazada`
         );

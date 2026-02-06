@@ -75,7 +75,7 @@ export type PendingRequestApi = {
 
 export type UpdateRequestStatusPayload = {
   requestId: number;
-  status: 'APPROVED' | 'REJECTED';
+  status: 'APROBADO' | 'RECHAZADO';
   comment: string;
 };
 
