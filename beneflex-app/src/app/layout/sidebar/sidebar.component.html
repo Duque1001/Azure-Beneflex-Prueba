@@ -2,8 +2,12 @@
   <a class="active" routerLink="/app">Beneficios</a>
   <a routerLink="/app/mis-solicitudes">Mis Solicitudes</a>
 
-  <button *ngIf="userRole === 'LIDER'" routerLink="/app/aprobaciones">
+  <!-- <button *ngIf="userRole === 'LIDER'" routerLink="/app/aprobaciones">
+    Aprobaciones
+  </button> -->
+  <button *ngIf="userService.isLeader()" routerLink="/app/aprobaciones">
     Aprobaciones
   </button>
+
 </nav>
 

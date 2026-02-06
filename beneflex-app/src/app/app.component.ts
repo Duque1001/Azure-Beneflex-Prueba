@@ -45,6 +45,7 @@ import { InteractionStatus } from '@azure/msal-browser';
 import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { environment } from '../environments/environment';
 import { UserService } from './core/services/user.service';
+import { AppUser } from './core/services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -87,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadMe() {
+  /*private loadMe() {
     this.http.get(environment.meApiUrl).subscribe({
       next: (user) => {
         this.userService.setUser(user);
@@ -98,7 +99,21 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loadedMe = false;
       }
     });
+  }*/
+
+  private loadMe() {
+    this.http.get<AppUser>(environment.meApiUrl).subscribe({
+      next: (user) => {
+        this.userService.setUser(user);
+        console.log('Usuario cargado:', user);
+      },
+      error: (err) => {
+        console.error('Error cargando usuario (get-me):', err);
+        this.loadedMe = false;
+      }
+    });
   }
+
 
   ngOnDestroy(): void {
     this.destroy$.next();

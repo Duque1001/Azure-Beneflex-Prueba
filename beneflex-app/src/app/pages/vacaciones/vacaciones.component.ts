@@ -131,7 +131,8 @@ export class VacacionesComponent implements OnInit {
   }
 
   cargarBeneficios(): void {
-    const userId = this.userService.getUserId();
+    //const userId = this.userService.getUserId();
+    const userId = this.userService.getUser;
 
     // Reintenta hasta que el get-me haya cargado el usuario
     if (!userId) {
@@ -194,7 +195,8 @@ export class VacacionesComponent implements OnInit {
   enviarSolicitud(payload: any): void {
     if (!this.beneficioSeleccionado) return;
 
-    const userId = this.userService.getUserId();
+    //const userId = this.userService.getUserId();
+    const userId = this.userService.getUser();
     if (!userId) {
       this.notify.error('No se ha cargado tu usuario. Vuelve a intentar.');
       return;
