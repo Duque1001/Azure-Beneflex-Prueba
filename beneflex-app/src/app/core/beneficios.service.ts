@@ -83,7 +83,8 @@ export class BeneficiosService {
   // Obtiene los beneficios del usuario autenticado
 
   getBeneficios(): Observable<any> {
-    const userId = this.userService.getUserId();
+    //const userId = this.userService.getUserId();
+    const userId = this.userService.getUser();
 
     if (!userId) {
       return throwError(() => new Error('Usuario no cargado aún'));
@@ -96,7 +97,8 @@ export class BeneficiosService {
   // Crear una nueva solicitud de beneficio
 
   crearSolicitud(data: any): Observable<any> {
-    const userId = this.userService.getUserId();
+    //const userId = this.userService.getUserId();
+    const userId = this.userService.getUser();
 
     if (!userId) {
       return throwError(() => new Error('Usuario no cargado aún'));
