@@ -154,7 +154,7 @@ export class MisSolicitudesComponent implements OnInit {
 
     const payload = {
       requestId: this.requestToCancel.id,
-      status: 'CANCELLED' as RequestStatus,
+      status: 'CANCELADO' as RequestStatus,
       comment: ''
     };
 
