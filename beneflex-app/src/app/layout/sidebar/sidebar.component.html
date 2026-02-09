@@ -1,13 +1,17 @@
 <nav class="sidebar">
-  <a class="active" routerLink="/app">Beneficios</a>
-  <a routerLink="/app/mis-solicitudes">Mis Solicitudes</a>
+  <a routerLink="/app/beneficios" routerLinkActive="active" class="menu-item">
+    Beneficios
+  </a>
 
-  <!-- <button *ngIf="userRole === 'LIDER'" routerLink="/app/aprobaciones">
-    Aprobaciones
-  </button> -->
-  <button *ngIf="userService.isLeader()" routerLink="/app/aprobaciones">
-    Aprobaciones
-  </button>
+  <a routerLink="/app/mis-solicitudes" routerLinkActive="active" class="menu-item">
+    Mis Solicitudes
+  </a>
 
+  <a *ngIf="userService.isLeader()"
+     routerLink="/app/aprobaciones"
+     routerLinkActive="active"
+     class="menu-item">
+    Aprobaciones
+  </a>
 </nav>
 
