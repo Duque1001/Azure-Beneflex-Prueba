@@ -84,7 +84,7 @@ export class BeneficiosService {
 
   getBeneficios(): Observable<any> {
     //const userId = this.userService.getUserId();
-    const userId = this.userService.getUser();
+    const userId = this.userService.getUser()?.id;
 
     if (!userId) {
       return throwError(() => new Error('Usuario no cargado aún'));
@@ -98,7 +98,7 @@ export class BeneficiosService {
 
   crearSolicitud(data: any): Observable<any> {
     //const userId = this.userService.getUserId();
-    const userId = this.userService.getUser();
+    const userId = this.userService.getUser()?.id;
 
     if (!userId) {
       return throwError(() => new Error('Usuario no cargado aún'));

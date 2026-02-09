@@ -92,7 +92,7 @@ export class MisSolicitudesComponent implements OnInit {
 
   cargar(): void {
     //const userId = this.userService.getUserId();
-    const userId = this.userService.getUser();
+    const userId = this.userService.getUser()?.id;
     if (!userId) {
       this.notify.error('Aún no se ha cargado tu usuario. Intenta nuevamente en unos segundos.');
       return;
