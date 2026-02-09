@@ -1,16 +1,13 @@
 <nav class="sidebar">
-  <a routerLink="/app/beneficios" routerLinkActive="active" class="menu-item">
+  <a routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
     Beneficios
   </a>
 
-  <a routerLink="/app/mis-solicitudes" routerLinkActive="active" class="menu-item">
+  <a routerLink="/app/mis-solicitudes" routerLinkActive="active">
     Mis Solicitudes
   </a>
 
-  <a *ngIf="userService.isLeader()"
-     routerLink="/app/aprobaciones"
-     routerLinkActive="active"
-     class="menu-item">
+  <a *ngIf="userService.isLeader()" routerLink="/app/aprobaciones" routerLinkActive="active">
     Aprobaciones
   </a>
 </nav>
