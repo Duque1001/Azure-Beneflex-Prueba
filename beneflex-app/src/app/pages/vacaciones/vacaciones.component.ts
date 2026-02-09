@@ -220,11 +220,34 @@ export class VacacionesComponent implements OnInit {
         this.cargarBeneficios();
         this.notify.success('Solicitud creada correctamente');
       },
-      error: (err: any) => {
+      /*error: (err: any) => {
         console.error('Error creando solicitud', err);
         if (err?.status === 0) this.notify.error('Bloqueado por CORS o red');
         else this.notify.error(`Error ${err?.status}: No se pudo crear la solicitud`);
-      }
+      }*/
+        error: (err: any) => {
+          console.error('Error creando solicitud', err);
+
+          if (err?.status === 0) {
+            this.notify.error('Bloqueado por CORS o red');
+            return;
+          }
+
+          // Mensaje que devuelve Azure Function
+          const backendMsg =
+            err?.error?.message ||
+            err?.error?.error?.message ||
+            err?.error?.error ||
+            err?.error ||
+            null;
+
+          const msg =
+            (typeof backendMsg === 'string' && backendMsg.trim().length > 0)
+              ? backendMsg
+              : 'No se pudo crear la solicitud';
+
+          this.notify.error(msg);
+        }
     });
   }
 }
