@@ -207,7 +207,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
 @NgModule({
   declarations: [
     HeaderComponent,
-    //SidebarComponent,
+    SidebarComponent,
     AuthLayoutComponent,
     VacacionesComponent,
     BenefitCardComponent,
@@ -227,7 +227,7 @@ export function msalInterceptorConfigFactory(): MsalInterceptorConfiguration {
     MsalModule,
 
     AppComponent,
-    SidebarComponent
+   //SidebarComponent
   ],
   providers: [
     {
