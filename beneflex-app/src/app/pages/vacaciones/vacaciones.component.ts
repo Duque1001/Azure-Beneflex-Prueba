@@ -69,7 +69,11 @@ export class VacacionesComponent implements OnInit {
           return {
             id: Number(x.id),
             title,
-            days: Number(x.available_days ?? 0),
+            //days: Number(x.available_days ?? 0),
+            days:
+              title === 'Vacaciones'
+                ? Math.floor(Number(x.available_days ?? 0))
+                : Number(x.available_days ?? 0),
             usedDays: Number(x.used_days ?? 0),
             iconSrc: benefitIconSrc(title)
           } as BeneficioCard;
