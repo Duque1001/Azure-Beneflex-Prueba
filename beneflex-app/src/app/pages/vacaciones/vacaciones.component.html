@@ -3,16 +3,13 @@
 
   <!-- *ngFor: recorre el arreglo "beneficios" y crea un <app-benefit-card> por cada elemento. -->
   <app-benefit-card
-    *ngFor="let b of beneficios">
-
-    <!-- Inputs: datos que recibe el componente hijo -->
+    *ngFor="let b of beneficios"
     [iconSrc]="b.iconSrc"
     [title]="b.title"
     [days]="b.days"
-
-    <!-- Output: evento emitido por el hijo ("solicitar") -->
     (solicitar)="abrirModal(b)">
   </app-benefit-card>
+
 </div>
 
 <!-- Modal para crear solicitud de un beneficio -->
