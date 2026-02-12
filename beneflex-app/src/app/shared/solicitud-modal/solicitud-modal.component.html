@@ -1,144 +1,96 @@
-<!-- <div class="overlay" *ngIf="visible">
-  <div class="modal">
+<!-- Overlay oscuro que cubre la pantalla, solo se muestra si "visible" es true -->
+     <div class="overlay" *ngIf="visible">
 
-    <h2>Solicitar beneficio</h2>
+      <!-- Contenedor del modal -->
+      <div class="modal">
 
-    <p>
-      Beneficio:
-      <strong>{{ beneficio?.title }}</strong>
-    </p>
+        <!-- Título -->
+        <h2>Solicitar beneficio</h2>
 
-    <form [formGroup]="form">
+        <!-- Muestra el beneficio seleccionado -->
+        <p>
+          Beneficio:
+          <strong>{{ beneficio?.title }}</strong>
+        </p>
 
-      <div class="field">
-        <label>Fecha a solicitar</label>
+        <!-- Formulario reactivo -->
+        <form [formGroup]="form">
 
-        <input
-          type="date"
-          formControlName="fecha"
-          [min]="minDate"
-        />
+          <!-- Campo fecha -->
+          <div class="field">
+            <label>Fecha a solicitar</label>
 
-        <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['required']">
-          La fecha es obligatoria
-        </small>
+            <!-- Input tipo date vinculado al formControl "fecha" -->
+            <input
+              type="date"
+              formControlName="fecha"
+              [min]="minDate" />  <!-- Evita seleccionar fechas menores al mínimo -->
 
-        <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['pastDate']">
-          No se puede elegir fechas pasadas
-        </small>
+            <!-- Mensajes de validación -->
+            <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['required']">
+              La fecha es obligatoria
+            </small>
+
+            <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['pastDate']">
+              No se puede elegir fechas pasadas
+            </small>
+
+            <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['notBusinessDay']">
+              Debe seleccionar un día laboral hábil
+            </small>
+          </div>
+
+          <!-- Campo número de días -->
+          <div class="field">
+            <label>Número de días</label>
+
+            <!-- Select vinculado al formControl "dias" -->
+            <select formControlName="dias">
+              <option [ngValue]="null" disabled selected>Seleccione...</option>
+
+              <!-- Opciones dinámicas según días disponibles -->
+              <option *ngFor="let d of diasDisponibles" [ngValue]="d">
+                {{ d }}
+              </option>
+            </select>
+
+            <!-- Validaciones -->
+            <small *ngIf="form.get('dias')?.touched && form.get('dias')?.errors?.['required']">
+              Debes seleccionar los días
+            </small>
+
+            <small *ngIf="form.get('dias')?.touched && form.get('dias')?.errors?.['min']">
+              El mínimo permitido es medio día
+            </small>
+          </div>
+
+          <!-- Campo comentario -->
+          <div class="field">
+            <label>Comentario</label>
+            <textarea rows="3" formControlName="comentario"></textarea>
+          </div>
+
+        </form>
+
+        <!-- Botones de acción -->
+        <div class="actions">
+
+          <!-- Cancela y cierra el modal -->
+          <button class="cancel"
+                  type="button"
+                  (click)="onCerrar()">
+            Cancelar
+          </button>
+
+          <!-- Confirma envío del formulario -->
+          <!-- No se deshabilita aunque esté inválido para que se disparen errores -->
+          <button class="confirm"
+                  type="button"
+                  (click)="onConfirmar()">
+            Confirmar
+          </button>
+
+        </div>
+
       </div>
-
-      <div class="field">
-        <label>Número de días</label>
-
-        <select formControlName="dias">
-          <option *ngFor="let d of diasDisponibles" [value]="d">
-            {{ d }}
-          </option>
-        </select>
-
-        <small *ngIf="form.get('dias')?.invalid && form.get('dias')?.touched">
-          Debes seleccionar al menos un día
-        </small>
-      </div>
-
-      <div class="field">
-        <label>Comentario</label>
-        <textarea rows="3" formControlName="comentario"></textarea>
-      </div>
-
-      <div class="error" *ngIf="form.get('dias')?.touched && form.get('dias')?.invalid">
-        <small *ngIf="form.get('dias')?.errors?.['required']">
-          Debes seleccionar los días
-        </small>
-        <small *ngIf="form.get('dias')?.errors?.['min']">
-          El mínimo permitido es medio día
-        </small>
-      </div>
-
-    </form>
-
-    <div class="actions">
-      <button class="cancel" (click)="onCerrar()">Cancelar</button>
-
-      <button class="confirm" type="button" (click)="onConfirmar()">
-        Confirmar
-      </button>
     </div>
-
-  </div>
-</div> -->
-
-<div class="overlay" *ngIf="visible">
-  <div class="modal">
-
-    <h2>Solicitar beneficio</h2>
-
-    <p>
-      Beneficio:
-      <strong>{{ beneficio?.title }}</strong>
-    </p>
-
-    <form [formGroup]="form">
-
-      <div class="field">
-        <label>Fecha a solicitar</label>
-
-        <input
-          type="date"
-          formControlName="fecha"
-          [min]="minDate"
-        />
-
-        <!-- Mensajes de error -->
-        <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['required']">
-          La fecha es obligatoria
-        </small>
-
-        <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['pastDate']">
-          No se puede elegir fechas pasadas
-        </small>
-
-        <small *ngIf="form.get('fecha')?.touched && form.get('fecha')?.errors?.['notBusinessDay']">
-          Debe seleccionar un día laboral hábil
-        </small>
-      </div>
-
-      <div class="field">
-        <label>Número de días</label>
-
-        <select formControlName="dias">
-          <option [ngValue]="null" disabled selected>Seleccione...</option>
-          <option *ngFor="let d of diasDisponibles" [ngValue]="d">
-            {{ d }}
-          </option>
-        </select>
-
-        <small *ngIf="form.get('dias')?.touched && form.get('dias')?.errors?.['required']">
-          Debes seleccionar los días
-        </small>
-
-        <small *ngIf="form.get('dias')?.touched && form.get('dias')?.errors?.['min']">
-          El mínimo permitido es medio día
-        </small>
-      </div>
-
-      <div class="field">
-        <label>Comentario</label>
-        <textarea rows="3" formControlName="comentario"></textarea>
-      </div>
-
-    </form>
-
-    <div class="actions">
-      <button class="cancel" type="button" (click)="onCerrar()">Cancelar</button>
-
-      <!-- NO se deshabilita por inválido, para permitir que dispare errores -->
-      <button class="confirm" type="button" (click)="onConfirmar()">
-        Confirmar
-      </button>
-    </div>
-
-  </div>
-</div>
-

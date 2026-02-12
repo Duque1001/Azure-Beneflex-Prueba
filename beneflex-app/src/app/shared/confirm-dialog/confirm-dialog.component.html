@@ -1,11 +1,30 @@
-<div class="overlay" *ngIf="visible">
-  <div class="dialog">
-    <h3 class="title">{{ title }}</h3>
-    <p class="msg">{{ message }}</p>
+<!-- Overlay oscuro que cubre la pantalla. Solo se muestra si "visible" es true -->
+     <div class="overlay" *ngIf="visible">
 
-    <div class="actions">
-      <button class="btn cancel" (click)="onCancel()">{{ cancelText }}</button>
-      <button class="btn ok" (click)="onConfirm()">{{ confirmText }}</button>
+      <!-- Contenedor del cuadro de diálogo -->
+      <div class="dialog">
+
+        <!-- Título dinámico -->
+        <h3 class="title">{{ title }}</h3>
+
+        <!-- Mensaje dinámico -->
+        <p class="msg">{{ message }}</p>
+
+        <!-- Botones de acción -->
+        <div class="actions">
+
+          <!-- Botón cancelar: emite evento cancel -->
+          <button class="btn cancel"
+                  (click)="onCancel()">
+            {{ cancelText }}
+          </button>
+
+          <!-- Botón confirmar: emite evento confirm -->
+          <button class="btn ok"
+                  (click)="onConfirm()">
+            {{ confirmText }}
+          </button>
+
+        </div>
+      </div>
     </div>
-  </div>
-</div>

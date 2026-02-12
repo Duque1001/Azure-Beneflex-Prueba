@@ -1,99 +1,61 @@
-/*import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-
-export type PendingRequest = {
-  id: number;
-  user_id?: number;
-  benefit_id?: number;
-  requested_days?: number;
-  status?: string;
-  created_at?: string;
-
-  // por si el backend ya hace join
-  user?: { nombre?: string; name?: string; email?: string };
-  benefit?: { name?: string; title?: string };
-};
-
-@Injectable({ providedIn: 'root' })
-export class ApprovalRequestsService {
-  constructor(private http: HttpClient) {}
-
-  // Endpoint
-  getPendientes(): Observable<PendingRequest[]> {
-    return this.http.get<PendingRequest[]>(environment.pendingRequestsApiUrl);
-  }
-
-  // endpoint para aprobar/rechazar
-
-  // updateStatus(id: number, status: 'APPROVED' | 'REJECTED'): Observable<any> {
-  //   return this.http.patch(environment.updateRequestStatusApiUrl, { id, status });
-  // }
-
-}*/
-
-/*import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-
-export type PendingRequestApi = {
-  id: number;
-  employee_name?: string;
-  benefit_name?: string;
-  requested_days?: number;
-  start_date?: string;
-  status?: string;
-};
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ApprovalRequestsService {
-
-  constructor(private http: HttpClient) {}
-
-  getPendientes(): Observable<PendingRequestApi[]> {
-    return this.http.get<PendingRequestApi[]>(environment.pendingRequestsApiUrl);
-  }
-}*/
-
+/**
+ * Importaciones necesarias:
+ * - Injectable → permite que el servicio pueda inyectarse en otros componentes.
+ * - HttpClient → para hacer llamadas HTTP al backend.
+ * - Observable → tipo que representa respuestas asincrónicas.
+ * - environment → contiene las URLs de las APIs según entorno (dev/prod).
+ */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
+// Tipo que define cómo viene una solicitud pendiente desde la API.
 export type PendingRequestApi = {
-  id: number;
-  employee_name?: string;
-  benefit_name?: string;
-  requested_days?: number;
-  start_date?: string;
-  status?: string;
+  id: number;                // ID de la solicitud
+  employee_name?: string;    // Nombre del empleado
+  benefit_name?: string;     // Nombre del beneficio
+  requested_days?: number;   // Días solicitados
+  start_date?: string;       // Fecha de inicio
+  status?: string;           // Estado actual
 };
 
+// Tipo que define el cuerpo (payload) que se envía cuando se aprueba o rechaza una solicitud.
 export type UpdateRequestStatusPayload = {
-  requestId: number;
-  status: 'APROBADO' | 'RECHAZADO';
-  comment: string;
+  requestId: number;                     // ID de la solicitud a actualizar
+  status: 'APROBADO' | 'RECHAZADO';      // Nuevo estado permitido
+  comment: string;                       // Comentario del aprobador
 };
 
+/**
+ * Servicio encargado de:
+ * - Consultar solicitudes pendientes
+ * - Aprobar o rechazar solicitudes
+ */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root' // Disponible globalmente en toda la app
 })
 export class ApprovalRequestsService {
+
+  // Inyección de HttpClient para consumir APIs
   constructor(private http: HttpClient) {}
 
+  // Obtiene todas las solicitudes pendientes desde la API.
   getPendientes(): Observable<PendingRequestApi[]> {
-    return this.http.get<PendingRequestApi[]>(environment.pendingRequestsApiUrl);
+    return this.http.get<PendingRequestApi[]>(
+      environment.pendingRequestsApiUrl
+    );
   }
 
-  // Llamar API para aprobar/rechazar
-  updateRequestStatus(payload: UpdateRequestStatusPayload): Observable<any> {
-    // POST para update.
+  // Envía al backend la aprobación o rechazo de una solicitud, usa método POST para actualizar estado.
+  updateRequestStatus(
+    payload: UpdateRequestStatusPayload
+  ): Observable<any> {
 
-    return this.http.post(environment.updateRequestStatusApiUrl, payload);
+    return this.http.post(
+      environment.updateRequestStatusApiUrl,
+      payload
+    );
   }
 }
 

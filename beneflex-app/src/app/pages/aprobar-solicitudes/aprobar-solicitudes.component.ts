@@ -1,196 +1,36 @@
-/*import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ApprovalRequestsService, PendingRequestUI } from '../../core/services/approval-requests.service';
-
-@Component({
-  selector: 'app-aprobar-solicitudes',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './aprobar-solicitudes.component.html',
-  styleUrl: './aprobar-solicitudes.component.css',
-})
-export class AprobarSolicitudesComponent implements OnInit {
-
-  solicitudes: PendingRequestUI[] = [];
-  cargando = false;
-
-  constructor(private service: ApprovalRequestsService) {}
-
-  ngOnInit(): void {
-    this.cargarPendientes();
-  }
-
-  cargarPendientes(): void {
-    this.cargando = true;
-
-    this.service.getPendientes().subscribe({
-      next: (data) => {
-        console.log('Pendientes UI:', data);
-        this.solicitudes = data;
-        this.cargando = false;
-      },
-      error: (err) => {
-        console.error('Error cargando pendientes', err);
-        this.cargando = false;
-      }
-    });
-  }
-
-  aprobar(id: number): void {
-    console.warn('Falta endpoint aprobar. id:', id);
-  }
-
-  rechazar(id: number): void {
-    console.warn('Falta endpoint rechazar. id:', id);
-  }
-}*/
-
-/*import { Component, OnInit } from '@angular/core';
-import { ApprovalRequestsService, PendingRequestApi } from '../../core/services/approval-requests.service';
-import { NotificationService } from '../../shared/services/notification.service';
-
-type PendingRequestUI = {
-  id: number;
-  employeeName: string;
-  benefitName: string;
-  requestedDays: number | null;
-  startDateRaw: string | null;
-  startDateUI: string; // dd-mm-aaaa
-  status: string;
-};
-
-@Component({
-  selector: 'app-aprobar-solicitudes',
-  standalone: false,
-  templateUrl: './aprobar-solicitudes.component.html',
-  styleUrl: './aprobar-solicitudes.component.css'
-})
-export class AprobarSolicitudesComponent implements OnInit {
-
-  cargando = false;
-  solicitudes: PendingRequestUI[] = [];
-
-  currentIndex = 0;
-  comentario = '';
-
-  constructor(
-    private service: ApprovalRequestsService,
-    private notify: NotificationService
-  ) {}
-
-  ngOnInit(): void {
-    this.cargarPendientes();
-  }
-
-  cargarPendientes(): void {
-    this.cargando = true;
-
-    this.service.getPendientes().subscribe({
-      next: (data: PendingRequestApi[]) => {
-        const arr = Array.isArray(data) ? data : [];
-
-        this.solicitudes = arr.map((x) => ({
-          id: x.id,
-          employeeName: x.employee_name?.trim() || '—',
-          benefitName: x.benefit_name?.trim() || '—',
-          requestedDays: (x.requested_days ?? null),
-          startDateRaw: x.start_date ?? null,
-          startDateUI: this.toDDMMYYYY(x.start_date),
-          status: (x.status || 'PENDING').toUpperCase(),
-        }));
-
-        this.currentIndex = 0;
-        this.comentario = '';
-        this.cargando = false;
-      },
-      error: (err: any) => {
-        console.error('Error cargando pendientes', err);
-        this.cargando = false;
-        this.notify.error('No se pudieron cargar las aprobaciones pendientes');
-      }
-    });
-  }
-
-  // dd-mm-aaaa
-  private toDDMMYYYY(iso?: string): string {
-    if (!iso) return '—';
-    const d = new Date(iso);
-    if (isNaN(d.getTime())) return '—';
-
-    const dd = String(d.getDate()).padStart(2, '0');
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const yyyy = d.getFullYear();
-    return `${dd}-${mm}-${yyyy}`;
-  }
-
-  get total(): number {
-    return this.solicitudes.length;
-  }
-
-  get current(): PendingRequestUI | null {
-    return this.total ? this.solicitudes[this.currentIndex] : null;
-  }
-
-  // Deshabilitar sin wrap-around
-  get isFirst(): boolean {
-    return this.currentIndex <= 0;
-  }
-
-  get isLast(): boolean {
-    return this.total ? this.currentIndex >= this.total - 1 : true;
-  }
-
-  prev(): void {
-    if (this.isFirst) return;
-    this.currentIndex -= 1;
-    this.comentario = '';
-  }
-
-  next(): void {
-    if (this.isLast) return;
-    this.currentIndex += 1;
-    this.comentario = '';
-  }
-
-  aprobar(): void {
-    const req = this.current;
-    if (!req) return;
-
-    // Demo (hasta que exista endpoint real)
-    this.notify.success(`Aprobado (demo) - solicitud #${req.id}`);
-  }
-
-  rechazar(): void {
-    const req = this.current;
-    if (!req) return;
-
-    // Demo (hasta que exista endpoint real)
-    this.notify.success(`Rechazado (demo) - solicitud #${req.id}`);
-  }
-}*/
-
 import { Component, OnInit } from '@angular/core';
+
+/**
+ * Servicio que llama al backend:
+ * - getPendientes(): trae solicitudes pendientes
+ * - updateRequestStatus(): aprueba/rechaza
+ * - Tipos de respuesta/payload.
+ */
 import {
   ApprovalRequestsService,
   PendingRequestApi,
   UpdateRequestStatusPayload
 } from '../../core/services/approval-requests.service';
+
+// Servicio para mostrar mensajes al usuario (toast/alertas).
 import { NotificationService } from '../../shared/services/notification.service';
+
+// Utilidad que mapea nombre del beneficio ruta del ícono.
 import { benefitIconSrc } from '../../shared/utils/benefit-icon.util';
 
+// Modelo para la UI (formato limpio para mostrar en pantalla), convierte nombres, fechas, nulls, íconos, etc.
 type PendingRequestUI = {
   id: number;
   employeeName: string;
   benefitName: string;
-
   iconSrc: string | null;
-
   requestedDays: number | null;
   startDateRaw: string | null;
   startDateUI: string; // dd-mm-aaaa
   status: string;
 };
 
+// Decisión permitida para aprobar/rechazar
 type Decision = 'APROBADO' | 'RECHAZADO';
 
 @Component({
@@ -201,26 +41,30 @@ type Decision = 'APROBADO' | 'RECHAZADO';
 })
 export class AprobarSolicitudesComponent implements OnInit {
 
+  // Control de loading y data
   cargando = false;
   solicitudes: PendingRequestUI[] = [];
 
+  // Navegación entre solicitudes
   currentIndex = 0;
   comentario = '';
 
-  // Popup confirmación
+  // Estado del modal de confirmación
   confirmVisible = false;
   pendingDecision: Decision | null = null;
   confirmText = '';
 
   constructor(
-    private service: ApprovalRequestsService,
-    private notify: NotificationService
+    private service: ApprovalRequestsService,   // API approvals
+    private notify: NotificationService         // mensajes UI
   ) {}
 
+  // Al iniciar el componente, carga pendientes
   ngOnInit(): void {
     this.cargarPendientes();
   }
 
+  // Llama API, transforma respuesta a formato UI y reinicia estado
   cargarPendientes(): void {
     this.cargando = true;
 
@@ -228,6 +72,7 @@ export class AprobarSolicitudesComponent implements OnInit {
       next: (data: PendingRequestApi[]) => {
         const arr = Array.isArray(data) ? data : [];
 
+        // Mapea del formato API (snake_case) a formato UI (camelCase)
         this.solicitudes = arr.map((x) => {
           const benefitName = x.benefit_name?.trim() || '—';
 
@@ -235,14 +80,15 @@ export class AprobarSolicitudesComponent implements OnInit {
             id: Number(x.id),
             employeeName: x.employee_name?.trim() || '—',
             benefitName,
-            iconSrc: benefitIconSrc(benefitName), // aquí queda el icono
+            iconSrc: benefitIconSrc(benefitName),     // calcula el ícono
             requestedDays: (x.requested_days ?? null),
             startDateRaw: x.start_date ?? null,
-            startDateUI: this.toDDMMYYYY(x.start_date),
+            startDateUI: this.toDDMMYYYY(x.start_date), // formatea fecha
             status: (x.status || 'PENDIENTE').toUpperCase(),
           };
         });
 
+        // Reset de navegación y comentario
         this.currentIndex = 0;
         this.comentario = '';
         this.cargando = false;
@@ -255,38 +101,35 @@ export class AprobarSolicitudesComponent implements OnInit {
     });
   }
 
+  // Devuelve el ícono asociado a un beneficio (por nombre)
   iconSrcFor(benefitName?: string | null): string | null {
     return benefitIconSrc((benefitName ?? '').trim());
   }
 
+  // Convierte fecha ISO a dd-mm-aaaa
   private toDDMMYYYY(iso?: string | null): string {
     if (!iso) return '—';
 
-    // Caso común: "2026-02-03"
     const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
     let d: Date;
 
     if (m) {
-      const yyyy = Number(m[1]);
-      const mm = Number(m[2]);
-      const dd = Number(m[3]);
-      d = new Date(yyyy, mm - 1, dd);
+      d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
     } else {
       d = new Date(iso);
     }
 
     if (isNaN(d.getTime())) return '—';
 
-    const dd = String(d.getDate()).padStart(2, '0');
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const yyyy = d.getFullYear();
-    return `${dd}-${mm}-${yyyy}`;
+    return `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
   }
 
+  // Total de pendientes
   get total(): number {
     return this.solicitudes.length;
   }
 
+  // Solicitud actual según el índice.
   get current(): PendingRequestUI | null {
     if (!this.total) return null;
     if (this.currentIndex < 0) this.currentIndex = 0;
@@ -294,27 +137,29 @@ export class AprobarSolicitudesComponent implements OnInit {
     return this.solicitudes[this.currentIndex];
   }
 
+  // Flags para habilitar/deshabilitar navegación
   get isFirst(): boolean {
     return this.currentIndex <= 0;
   }
-
   get isLast(): boolean {
     return this.total ? this.currentIndex >= this.total - 1 : true;
   }
 
+  // Navega a la anterior
   prev(): void {
     if (this.isFirst) return;
     this.currentIndex -= 1;
     this.comentario = '';
   }
 
+  // Navega a la siguiente
   next(): void {
     if (this.isLast) return;
     this.currentIndex += 1;
     this.comentario = '';
   }
 
-  // CONFIRM POPUP FLOW
+  // Abre modal confirmando la decisión
   openConfirm(decision: Decision): void {
     const req = this.current;
     if (!req) return;
@@ -328,12 +173,20 @@ export class AprobarSolicitudesComponent implements OnInit {
     this.confirmVisible = true;
   }
 
+  // Cierra modal y limpia estado
   closeConfirm(): void {
     this.confirmVisible = false;
     this.pendingDecision = null;
     this.confirmText = '';
   }
 
+  /**
+   * Confirma la acción:
+   * - arma payload
+   * - llama API
+   * - notifica
+   * - elimina la solicitud de la lista y ajusta índice
+   */
   confirmYes(): void {
     const req = this.current;
     const decision = this.pendingDecision;
@@ -362,9 +215,10 @@ export class AprobarSolicitudesComponent implements OnInit {
             : `Solicitud #${req.id} rechazada`
         );
 
-        // Quitar de la lista y mantener índice consistente
+        // Quita la solicitud procesada
         this.solicitudes.splice(this.currentIndex, 1);
 
+        // Ajusta el índice si quedaste al final
         if (this.currentIndex >= this.solicitudes.length) {
           this.currentIndex = Math.max(0, this.solicitudes.length - 1);
         }

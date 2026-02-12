@@ -1,14 +1,32 @@
 <nav class="sidebar">
-  <a routerLink="/app" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+
+  <!--
+    Enlace a la página principal de beneficios.
+    routerLink navega sin recargar la página.
+    routerLinkActive="active" agrega clase CSS cuando la ruta está activa.
+    exact: true solo se activa si la ruta es exactamente /app.
+  -->
+  <a routerLink="/app"
+     routerLinkActive="active"
+     [routerLinkActiveOptions]="{ exact: true }">
     Beneficios
   </a>
 
-  <a routerLink="/app/mis-solicitudes" routerLinkActive="active">
+  <!-- Enlace a la página de solicitudes del usuario -->
+  <a routerLink="/app/mis-solicitudes"
+     routerLinkActive="active">
     Mis Solicitudes
   </a>
 
-  <a *ngIf="userService.isLeader()" routerLink="/app/aprobaciones" routerLinkActive="active">
+  <!--
+    Enlace visible solo si el usuario es líder.
+    *ngIf renderiza el elemento solo si la condición es true.
+    userService.isLeader() controla permisos.
+  -->
+  <a *ngIf="userService.isLeader()"
+     routerLink="/app/aprobaciones"
+     routerLinkActive="active">
     Aprobaciones
   </a>
-</nav>
 
+</nav>

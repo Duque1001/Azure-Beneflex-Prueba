@@ -1,13 +1,25 @@
+<!-- Tarjeta individual de beneficio -->
 <div class="card">
+
+  <!-- Muestra el ícono solo si existe iconSrc -->
   <div class="icon-wrap" *ngIf="iconSrc">
-    <img class="icon" [src]="iconSrc" [alt]="title" />
+    <img class="icon"
+         [src]="iconSrc">  <!-- Ruta dinámica de la imagen -->
+         [alt]="title" />  <!-- Texto alternativo accesible -->
   </div>
 
+  <!-- Nombre del beneficio -->
   <h3>{{ title }}</h3>
+
+  <!-- Días disponibles -->
   <p class="days">{{ days }} días</p>
   <p>Disponibles</p>
 
-  <button [disabled]="days === 0" (click)="onSolicitar()">
+  <!-- Botón para solicitar el beneficio -->
+  <button
+    [disabled]="days === 0">  <!-- Se desactiva si no hay días -->
+    (click)="onSolicitar()">  <!-- Emite evento al componente padre -->
     + Solicitar
   </button>
+
 </div>
