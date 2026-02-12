@@ -17,8 +17,8 @@
 
 <!-- Modal para crear solicitud de un beneficio -->
 <app-solicitud-modal
-  [visible]="modalVisible">                <!-- Controla si el modal se muestra -->
-  [beneficio]="beneficioSeleccionado"      <!-- Beneficio activo en el modal -->
-  (cerrar)="cerrarModal()"                 <!-- Evento para cerrar el modal -->
-  (confirmar)="enviarSolicitud($event)">   <!-- Evento con datos del formulario -->
+  [visible]="modalVisible"
+  [beneficio]="beneficioSeleccionado"
+  (cerrar)="cerrarModal()"
+  (confirmar)="enviarSolicitud($event)">
 </app-solicitud-modal>

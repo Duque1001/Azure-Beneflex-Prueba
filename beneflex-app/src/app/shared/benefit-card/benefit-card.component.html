@@ -4,8 +4,8 @@
   <!-- Muestra el ícono solo si existe iconSrc -->
   <div class="icon-wrap" *ngIf="iconSrc">
     <img class="icon"
-         [src]="iconSrc">  <!-- Ruta dinámica de la imagen -->
-         [alt]="title" />  <!-- Texto alternativo accesible -->
+         [src]="iconSrc"
+         [alt]="title" />
   </div>
 
   <!-- Nombre del beneficio -->
@@ -17,8 +17,8 @@
 
   <!-- Botón para solicitar el beneficio -->
   <button
-    [disabled]="days === 0">  <!-- Se desactiva si no hay días -->
-    (click)="onSolicitar()">  <!-- Emite evento al componente padre -->
+    [disabled]="days === 0"
+    (click)="onSolicitar()">
     + Solicitar
   </button>
 

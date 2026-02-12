@@ -43,8 +43,8 @@
       <button
         class="x"
         title="Cancelar solicitud"
-        [disabled]="!canCancel(req)">  <!-- Solo habilitado si puede cancelarse -->
-        (click)="onClickCancel(req)">  <!-- Ejecuta acción -->
+        [disabled]="!canCancel(req)"
+        (click)="onClickCancel(req)">
         ×
       </button>
     </div>
@@ -53,11 +53,11 @@
 
 <!-- Componente popup de confirmación -->
 <app-confirm-dialog
-  [visible]="confirmVisible">       <!-- Controla visibilidad -->
-  [title]="confirmTitle"            <!-- Título dinámico -->
-  [message]="confirmMessage"        <!-- Mensaje dinámico -->
+  [visible]="confirmVisible"
+  [title]="confirmTitle"
+  [message]="confirmMessage"
   confirmText="Sí, cancelar"
   cancelText="No"
-  (cancel)="onCancelPopup()"        <!-- Evento al cancelar -->
-  (confirm)="onConfirmPopup()">     <!-- Evento al confirmar -->
+  (cancel)="onCancelPopup()"
+  (confirm)="onConfirmPopup()">
 </app-confirm-dialog>
