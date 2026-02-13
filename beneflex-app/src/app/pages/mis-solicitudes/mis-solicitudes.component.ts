@@ -75,7 +75,18 @@ export class MisSolicitudesComponent implements OnInit {
   // Formatea fecha a "dd de mes de yyyy" en es-CO
   formatFechaLarga(dateStr?: string): string {
     if (!dateStr) return '—';
-    const d = new Date(dateStr);
+
+    // Parse "YYYY-MM-DD" como fecha LOCAL (sin corrimiento por zona horaria)
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+    let d: Date;
+
+    if (m) {
+      d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])); // local
+    } else {
+      // fallback si llega con hora
+      d = new Date(dateStr);
+    }
+
     if (isNaN(d.getTime())) return '—';
 
     return d.toLocaleDateString('es-CO', {
@@ -84,6 +95,7 @@ export class MisSolicitudesComponent implements OnInit {
       year: 'numeric'
     });
   }
+
 
   // Devuelve el ícono según nombre del beneficio
   iconSrcFor(name?: string): string | null {
