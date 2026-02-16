@@ -11,7 +11,8 @@ import { MyRequest, RequestsService, RequestStatus } from '../../core/services/r
 
 // Utilidad: nombre del beneficio/ícono
 import { benefitIconSrc } from '../../shared/utils/benefit-icon.util';
-import { Router } from '@angular/router';
+
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mis-solicitudes',
@@ -36,8 +37,7 @@ export class MisSolicitudesComponent implements OnInit {
   constructor(
     private requestsService: RequestsService, // API
     private userService: UserService,         // usuario actual
-    private notify: NotificationService,      // mensajes UI
-    private router: Router
+    private notify: NotificationService       // mensajes UI
   ) {}
 
   // Al iniciar, carga solicitudes
@@ -98,7 +98,6 @@ export class MisSolicitudesComponent implements OnInit {
     });
   }
 
-
   // Devuelve el ícono según nombre del beneficio
   iconSrcFor(name?: string): string | null {
     return benefitIconSrc(name ?? '');
@@ -133,45 +132,54 @@ export class MisSolicitudesComponent implements OnInit {
       comment: ''
     };
 
-    this.requestsService.updateRequestStatus(payload).subscribe({
-      next: () => {
-        this.notify.success('Solicitud cancelada correctamente');
-        this.confirmVisible = false;
-        this.requestToCancel = null;
-        this.cargar(); // recarga pendientes
-      },
-      /*error: (err: any) => {
-        console.error('Error cancelando solicitud', err);
-        this.notify.error('No se pudo cancelar la solicitud');
-        this.confirmVisible = false;
-        this.requestToCancel = null;
-      }*/
-      error: (err: any) => {
-        console.error('Error cancelando solicitud', err);
+    // bloquea botones mientras responde
+    this.cargando = true;
 
-        // status 0 suele ser red/CORS (request ni llega al backend)
-        if (err?.status === 0) {
-          this.notify.error('Bloqueado por CORS o red');
-          return;
+    this.requestsService.updateRequestStatus(payload)
+      .pipe(
+        finalize(() => {
+          // Siempre cerrar modal y limpiar estado
+          this.confirmVisible = false;
+          this.requestToCancel = null;
+
+          // Siempre apagar loading
+          this.cargando = false;
+        })
+      )
+      .subscribe({
+        next: () => {
+          this.notify.success('Solicitud cancelada correctamente');
+
+          // Refrescar la pantalla actual
+          this.cargar();
+        },
+        error: (err: any) => {
+          console.error('Error cancelando solicitud', err);
+
+          // status 0 suele ser red/CORS
+          if (err?.status === 0) {
+            this.notify.error('Bloqueado por CORS o red');
+            this.cargar(); // refresca igual la lista
+            return;
+          }
+
+          const backendMsg =
+            err?.error?.message ||
+            err?.error?.error?.message ||
+            err?.error?.error ||
+            err?.error ||
+            null;
+
+          const msg =
+            (typeof backendMsg === 'string' && backendMsg.trim().length > 0)
+              ? backendMsg
+              : 'No se pudo cancelar la solicitud';
+
+          this.notify.error(msg);
+
+          // refresca la pantalla actual
+          this.cargar();
         }
-
-        // Intenta extraer mensaje útil del backend (Azure Function)
-        const backendMsg =
-          err?.error?.message ||
-          err?.error?.error?.message ||
-          err?.error?.error ||
-          err?.error ||
-          null;
-
-        const msg =
-          (typeof backendMsg === 'string' && backendMsg.trim().length > 0)
-            ? backendMsg
-            : 'No se pudo cancelar la solicitud';
-
-        this.notify.error(msg);
-
-        this.cargar();
-      }
-    });
+      });
   }
 }
