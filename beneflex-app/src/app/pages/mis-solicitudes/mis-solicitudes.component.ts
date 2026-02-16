@@ -170,11 +170,7 @@ export class MisSolicitudesComponent implements OnInit {
 
         this.notify.error(msg);
 
-        setTimeout(() => {
-          this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-            this.router.navigate([this.router.url]);
-          });
-        }, 1500);
+        this.cargar();
       }
     });
   }
