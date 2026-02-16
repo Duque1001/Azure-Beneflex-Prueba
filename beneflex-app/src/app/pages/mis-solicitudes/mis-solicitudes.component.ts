@@ -72,11 +72,11 @@ export class MisSolicitudesComponent implements OnInit {
     });
   }
 
-  // Formatea fecha a "dd de mes de yyyy" en es-CO
+  // Formatea fecha a "dd de mes de yyyy"
   formatFechaLarga(dateStr?: string): string {
     if (!dateStr) return '—';
 
-    // Parse "YYYY-MM-DD" como fecha LOCAL (sin corrimiento por zona horaria)
+    // Parse "YYYY-MM-DD" como fecha LOCAL
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
     let d: Date;
 
