@@ -1,27 +1,48 @@
-/*import { Component } from '@angular/core';
-
-// Representa el encabezado superior de la aplicación.
-@Component({
-  selector: 'app-header',                // Etiqueta HTML para usar el componente
-  standalone: false,                     // Pertenece a un módulo (no es standalone)
-  templateUrl: './header.component.html', // Vista HTML asociada
-  styleUrl: './header.component.css'     // Estilos del componente
-})
-export class HeaderComponent {
-  // renderiza la estructura visual definida en su HTML.
-}*/
-
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+import { UserService } from '../../core/services/user.service';
 
-// Representa el encabezado superior de la aplicación.
 @Component({
-  selector: 'app-header',                // Etiqueta HTML para usar el componente
-  standalone: false,                     // Pertenece a un módulo (no es standalone)
-  templateUrl: './header.component.html', // Vista HTML asociada
-  styleUrl: './header.component.css'     // Estilos del componente
+  selector: 'app-header',
+  standalone: false,
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-
-  //Evento para abrir/cerrar el sidebar
   @Output() menuToggle = new EventEmitter<void>();
+
+  constructor(
+    private msal: MsalService,
+    private router: Router,
+    private userService: UserService
+  ) {}
+
+  /*logout(): void {
+    // Limpia el usuario en memoria de tu app
+    this.userService.setUser(null);
+
+    // Cierra sesión en Microsoft (Entra ID) y vuelve a la landing
+    this.msal.logoutRedirect({
+      postLogoutRedirectUri: window.location.origin, // vuelve a la raíz: LandingComponent
+    });
+
+    // this.router.navigate(['/']);
+  }*/
+    logout(): void {
+      // Limpiar usuario en memoria
+      this.userService.setUser(null);
+
+      // Limpiar almacenamiento local por seguridad
+      localStorage.clear();
+      sessionStorage.clear();
+
+      // Cerrar sesión completamente en Microsoft
+      this.msal.logoutRedirect({
+        account: this.msal.instance.getActiveAccount() || undefined,
+        postLogoutRedirectUri: window.location.origin, // vuelve a Landing ('/')
+      });
+    }
+
 }
+

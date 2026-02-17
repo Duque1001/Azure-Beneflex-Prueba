@@ -1,5 +1,15 @@
 <!-- <header class="header">
-    <span class="title">VACACIONES - BENEFLEX</span>
+
+  <button
+    type="button"
+    class="menu-btn"
+    aria-label="Abrir/cerrar menú"
+    (click)="menuToggle.emit()"
+  >
+    <span class="menu-icon" aria-hidden="true">☰</span>
+  </button>
+
+  <span class="title">VACACIONES - BENEFLEX</span>
 </header> -->
 
 <header class="header">
@@ -14,4 +24,13 @@
   </button>
 
   <span class="title">VACACIONES - BENEFLEX</span>
+
+  <!-- empuja el botón a la derecha -->
+  <span class="spacer"></span>
+
+  <!-- botón cerrar sesión -->
+  <button type="button" class="logout-btn" (click)="logout()">
+    Cerrar sesión
+  </button>
 </header>
+
