@@ -11,8 +11,8 @@ export const environment = {
   updateRequestStatusApiUrl: 'https://beneflex-functions-ajfsbxbfetexc9cu.canadacentral-01.azurewebsites.net/api/update-request-status',
 
   msal: {
-    clientId: 'c2118f1c-4ac4-4251-84de-10a4274ee244',
-    tenantId: '7f32fcbe-7a03-45a9-a3d0-2beb0fa0aaf7'
+    clientId: 'e29998d4-12f7-4400-a69d-2b3268db9650',
+    tenantId: 'd3852f48-3c9a-48c2-afc9-1d4bf09fb882'
   }
 };
 
