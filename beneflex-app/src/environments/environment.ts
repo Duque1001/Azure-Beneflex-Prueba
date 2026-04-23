@@ -15,7 +15,7 @@ export const environment = {
     // clientId: '7d035349-8064-4ad8-82a6-631255cde4a4',
     // tenantId: 'd3852f48-3c9a-48c2-afc9-1d4bf09fb882'
     clientId: '55e1c5ee-d3cd-43be-803d-37ddc81ab90a',
-    tenantId: 'beb07c45-7a81-495d-8fc2-475a31cd7831cd'
+    tenantId: 'beb07c45-7a81-495d-8fc2-475a31cd7831'
   }
 };
 
