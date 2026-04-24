@@ -59,7 +59,8 @@ export function msalInstanceFactory() {
     auth: {
       clientId: environment.msal.clientId,
       authority: `https://login.microsoftonline.com/${environment.msal.tenantId}`,
-      redirectUri: window.location.origin
+      // redirectUri: window.location.origin
+      redirectUri: 'https://orange-sea-02adb5d1e.7.azurestaticapps.net'
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage // guarda sesión en localStorage
