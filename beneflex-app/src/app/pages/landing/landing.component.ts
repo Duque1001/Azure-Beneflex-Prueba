@@ -25,8 +25,8 @@ export class LandingComponent {
 
     this.msal.loginRedirect({
       scopes: ['openid', 'profile', 'email'], // Permisos básicos de identidad
-      // redirectStartPage: window.location.origin + '/app',
-      redirectStartPage: 'https://orange-sea-02adb5d1e.7.azurestaticapps.net/app',
+      redirectStartPage: window.location.origin + '/app',
+      // redirectStartPage: 'https://orange-sea-02adb5d1e.7.azurestaticapps.net/app',
       // Después del login, redirige a /app
     });
   }
